@@ -1,0 +1,147 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <WarningsAsErrors>CS8600;CS8602;CS8603</WarningsAsErrors>
+    <PackageId>better_mouse_mod</PackageId>
+    <RootNamespace>better_mouse_mod</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Harmony -->
+    <Reference Include="0Harmony" />
+
+    <!-- Railroader -->
+    <Reference Include="Assembly-CSharp" />
+
+    <!-- Unity -->
+    <Reference Include="Unity.Analytics.DataPrivacy" />
+    <Reference Include="Unity.Burst.Unsafe" />
+    <Reference Include="Unity.Burst" />
+    <Reference Include="Unity.Collections.LowLevel.ILSupport" />
+    <Reference Include="Unity.Collections" />
+    <Reference Include="Unity.InputSystem.ForUI" />
+    <Reference Include="Unity.InputSystem" />
+    <Reference Include="Unity.Mathematics" />
+    <Reference Include="Unity.MemoryProfiler" />
+    <Reference Include="Unity.PlayableGraphVisualizer" />
+    <Reference Include="Unity.Postprocessing.Runtime" />
+    <Reference Include="Unity.ProBuilder.Csg" />
+    <Reference Include="Unity.ProBuilder.KdTree" />
+    <Reference Include="Unity.ProBuilder.Poly2Tri" />
+    <Reference Include="Unity.ProBuilder.Stl" />
+    <Reference Include="Unity.ProBuilder" />
+    <Reference Include="Unity.ProGrids" />
+    <Reference Include="Unity.Profiling.Core" />
+    <Reference Include="Unity.Recorder.Base" />
+    <Reference Include="Unity.Recorder" />
+    <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary" />
+    <Reference Include="Unity.RenderPipelines.Core.Runtime" />
+    <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary" />
+    <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary" />
+    <Reference Include="Unity.RenderPipelines.Universal.Runtime" />
+    <Reference Include="Unity.RenderPipelines.Universal.Shaders" />
+    <Reference Include="Unity.TerrainTools" />
+    <Reference Include="Unity.TextMeshPro" />
+    <Reference Include="Unity.Timeline" />
+    <Reference Include="Unity.VisualEffectGraph.Runtime" />
+
+    <Reference Include="UnityEngine.AIModule" />
+    <Reference Include="UnityEngine.ARModule" />
+    <Reference Include="UnityEngine.AccessibilityModule" />
+    <Reference Include="UnityEngine.AndroidJNIModule" />
+    <Reference Include="UnityEngine.AnimationModule" />
+    <Reference Include="UnityEngine.AssetBundleModule" />
+    <Reference Include="UnityEngine.AudioModule" />
+    <Reference Include="UnityEngine.ClothModule" />
+    <Reference Include="UnityEngine.ClusterInputModule" />
+    <Reference Include="UnityEngine.ClusterRendererModule" />
+    <Reference Include="UnityEngine.CoreModule" />
+    <Reference Include="UnityEngine.CrashReportingModule" />
+    <Reference Include="UnityEngine.DSPGraphModule" />
+    <Reference Include="UnityEngine.DirectorModule" />
+    <Reference Include="UnityEngine.GIModule" />
+    <Reference Include="UnityEngine.GameCenterModule" />
+    <Reference Include="UnityEngine.GridModule" />
+    <Reference Include="UnityEngine.HotReloadModule" />
+    <Reference Include="UnityEngine.IMGUIModule" />
+    <Reference Include="UnityEngine.ImageConversionModule" />
+    <Reference Include="UnityEngine.InputLegacyModule" />
+    <Reference Include="UnityEngine.InputModule" />
+    <Reference Include="UnityEngine.JSONSerializeModule" />
+    <Reference Include="UnityEngine.LocalizationModule" />
+    <Reference Include="UnityEngine.NVIDIAModule" />
+    <Reference Include="UnityEngine.ParticleSystemModule" />
+    <Reference Include="UnityEngine.PerformanceReportingModule" />
+    <Reference Include="UnityEngine.Physics2DModule" />
+    <Reference Include="UnityEngine.PhysicsModule" />
+    <Reference Include="UnityEngine.ProfilerModule" />
+    <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule" />
+    <Reference Include="UnityEngine.ScreenCaptureModule" />
+    <Reference Include="UnityEngine.SharedInternalsModule" />
+    <Reference Include="UnityEngine.SpriteMaskModule" />
+    <Reference Include="UnityEngine.SpriteShapeModule" />
+    <Reference Include="UnityEngine.StreamingModule" />
+    <Reference Include="UnityEngine.SubstanceModule" />
+    <Reference Include="UnityEngine.SubsystemsModule" />
+    <Reference Include="UnityEngine.TLSModule" />
+    <Reference Include="UnityEngine.TerrainModule" />
+    <Reference Include="UnityEngine.TerrainPhysicsModule" />
+    <Reference Include="UnityEngine.TextCoreFontEngineModule" />
+    <Reference Include="UnityEngine.TextCoreTextEngineModule" />
+    <Reference Include="UnityEngine.TextRenderingModule" />
+    <Reference Include="UnityEngine.TilemapModule" />
+    <Reference Include="UnityEngine.UI" />
+    <Reference Include="UnityEngine.UIElementsModule" />
+    <Reference Include="UnityEngine.UIElementsNativeModule" />
+    <Reference Include="UnityEngine.UIModule" />
+    <Reference Include="UnityEngine.UNETModule" />
+    <Reference Include="UnityEngine.UmbraModule" />
+    <Reference Include="UnityEngine.UnityAnalyticsCommonModule" />
+    <Reference Include="UnityEngine.UnityAnalyticsModule" />
+    <Reference Include="UnityEngine.UnityConnectModule" />
+    <Reference Include="UnityEngine.UnityCurlModule" />
+    <Reference Include="UnityEngine.UnityTestProtocolModule" />
+    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule" />
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule" />
+    <Reference Include="UnityEngine.UnityWebRequestModule" />
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule" />
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule" />
+    <Reference Include="UnityEngine.VFXModule" />
+    <Reference Include="UnityEngine.VRModule" />
+    <Reference Include="UnityEngine.VehiclesModule" />
+    <Reference Include="UnityEngine.VideoModule" />
+    <Reference Include="UnityEngine.VirtualTexturingModule" />
+    <Reference Include="UnityEngine.WindModule" />
+    <Reference Include="UnityEngine.XRModule" />
+    <Reference Include="UnityEngine" />
+
+    <Reference Include="UnityModManager" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="package.ps1" />
+  </ItemGroup>
+
+   <ItemGroup>
+    <PackageReference Include="Krafs.Publicizer" Version="2.2.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+   <ItemGroup>
+    <Publicize Include="Assembly-CSharp" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <!-- Copy to build folder -->
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="build/" />
+
+    <!-- Package after Release build -->
+    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="powershell -executionpolicy bypass .\package.ps1 -NoArchive -OutputDirectory 'D:\Programs\Railroader\Mods'" />
+    <!-- Linux -->
+    <Exec Condition="'$(OS)' != 'Windows_NT'" Command="pwsh -Command &quot;(package.ps1)&quot;" />
+  </Target>
+
+</Project>

@@ -1,0 +1,12 @@
+<Project>
+    <PropertyGroup>
+        <RrInstallDir>D:\Programs\Railroader</RrInstallDir>
+        <UnityInstallDir>D:\Programs\Unity\2021.3.33f1\Editor</UnityInstallDir>
+        <ReferencePath>
+            $(RrInstallDir)\Railroader_Data\Managed\;
+            $(RrInstallDir)\Railroader_Data\Managed\UnityModManager\;
+            $(UnityInstallDir)\Data\Managed\
+        </ReferencePath>
+        <AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath);</AssemblySearchPaths>
+    </PropertyGroup>
+</Project>
