@@ -4,6 +4,11 @@
             "Id": "better_mouse_mod",
             "Version": "0.0.1",
             "DownloadUrl": "https://github.com/t0stiman/rr_better_mouse_mod/releases/download/v0.0.1/better_mouse_mod.zip"
+        },
+        {
+            "Id": "better_mouse_mod",
+            "Version": "0.0.2",
+            "DownloadUrl": "https://github.com/t0stiman/rr_better_mouse_mod/releases/download/v0.0.2/better_mouse_mod.zip"
         }
     ]
 }

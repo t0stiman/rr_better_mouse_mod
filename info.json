@@ -1,7 +1,7 @@
 {
 	"Id": "better_mouse_mod",
-	"Version": "0.0.1",
-	"DisplayName": "Better mouse mod",
+	"Version": "0.0.2",
+	"DisplayName": "Better controls mod",
 	"Author": "Tostiman",
 	"EntryMethod": "better_mouse_mod.Main.Load",
 	"AssemblyName": "better_mouse_mod.dll",
