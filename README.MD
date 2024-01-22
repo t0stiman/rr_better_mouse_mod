@@ -10,3 +10,12 @@ Camera:
 Pause menu:
 - Disable closing windows with the escape button, so you can pause without closing all windows (this tweak is disabled by default).
 - Pause the game with the pause/break button on your keyboard, so you don't have to close all windows to pause.
+
+## How to install
+
+1. install Unity Mod Manager(UMM) and configure it for Railroader
+2. download this mods zip and yeet it into UMM
+
+## Support me
+
+If you like my mods, please consider [buying me a coffee](https://ko-fi.com/tostiman). Thanks!
