@@ -13,6 +13,7 @@
 
     <!-- Railroader -->
     <Reference Include="Assembly-CSharp" />
+    <Reference Include="Definition" />
 
     <!-- Unity -->
     <Reference Include="Unity.Analytics.DataPrivacy" />
@@ -116,7 +117,9 @@
     <Reference Include="UnityEngine.XRModule" />
     <Reference Include="UnityEngine" />
 
+    <!-- others-->
     <Reference Include="UnityModManager" />
+    <Reference Include="KeyValue.Runtime" />    
   </ItemGroup>
 
   <ItemGroup>

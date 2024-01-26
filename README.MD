@@ -11,6 +11,11 @@ Pause menu:
 - Disable closing windows with the escape button, so you can pause without closing all windows (this tweak is disabled by default).
 - Pause the game with the pause/break button on your keyboard, so you don't have to close all windows to pause.
 
+Vehicle controls:
+- Change the amount of throttle notches on steam locomotives.
+- Change the amount of throttle notches on diesel locomotives.
+- Change how fast vehicle control inputs should be repeated when holding the button.
+
 ## How to install
 
 1. install Unity Mod Manager(UMM) and configure it for Railroader

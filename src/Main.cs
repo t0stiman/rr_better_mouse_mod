@@ -22,6 +22,7 @@ static class Main
 		{
 			myModEntry = modEntry;
 			MySettings = UnityModManager.ModSettings.Load<Settings>(modEntry);
+			MySettings.Setup();
 			
 			modEntry.OnGUI = entry => MySettings.Draw(entry);
 			modEntry.OnSaveGUI = entry => MySettings.Save(entry);
