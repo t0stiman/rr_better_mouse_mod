@@ -51,7 +51,7 @@ public class TrainInput_Update_Patch
 		bool useBigStep = loco.Archetype == CarArchetype.LocomotiveDiesel | isControlDown;
 		float stepSize = useBigStep ? 1f : 0.1f;
 
-		var reverserRepeatInterval = useBigStep ? Main.MySettings.Notched_RepeatInterval : Main.MySettings.Smooth_RepeatInterval;
+		var reverserRepeatInterval = Main.MySettings.Notched_RepeatInterval;
 		
 		if (shared.GetReverserBack(reverserRepeatInterval))
 		{

@@ -24,10 +24,10 @@ namespace better_mouse_mod
 		public int ThrottleNotchCount_Diesel = 8;
 		private string ThrottleNotchCount_Diesel_text = null;
 
-		public float Notched_RepeatInterval = 0.2f;
+		public float Notched_RepeatInterval = 0.10f;
 		private string Notched_RepeatInterval_text;
 		
-		public float Smooth_RepeatInterval = 0.05f; //0.05 is the default in VirtualRepeatingInput constructor
+		public float Smooth_RepeatInterval = 0.01f; //0.05 is the default in VirtualRepeatingInput constructor
 		private string Smooth_RepeatInterval_text;
 
 		public void Setup()
@@ -70,10 +70,10 @@ namespace better_mouse_mod
 			GUILayout.Space(20);
 			GUILayout.Label("How fast vehicle control inputs should be repeated when holding the button (in seconds). Lower value = faster.");
 			
-			GUILayout.Label("Repeat interval for notched controls:"); //todo
+			GUILayout.Label("Repeat interval for notched controls (recommended: 0.1):");
 			DrawFloatInput(ref Notched_RepeatInterval_text, ref Notched_RepeatInterval);
 			
-			GUILayout.Label("Repeat interval for smooth (non-notched) controls:");
+			GUILayout.Label("Repeat interval for smooth (non-notched) controls (recommended: 0.01):");
 			DrawFloatInput(ref Smooth_RepeatInterval_text, ref Smooth_RepeatInterval);
 		}
 
