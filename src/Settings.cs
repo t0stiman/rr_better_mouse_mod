@@ -29,6 +29,9 @@ namespace better_mouse_mod
 		
 		public float Smooth_RepeatInterval = 0.01f; //0.05 is the default in VirtualRepeatingInput constructor
 		private string Smooth_RepeatInterval_text;
+		
+		//console
+		public bool EnableConsolePatch = false;
 
 		public void Setup()
 		{
@@ -75,6 +78,12 @@ namespace better_mouse_mod
 			
 			GUILayout.Label("Repeat interval for smooth (non-notched) controls (recommended: 0.01):");
 			DrawFloatInput(ref Smooth_RepeatInterval_text, ref Smooth_RepeatInterval);
+			
+			// console
+			GUILayout.Space(20);
+			GUILayout.Label("Console: ");
+			
+			EnableConsolePatch = GUILayout.Toggle(EnableConsolePatch, "Enable console patch. There is a bug where the console would close when you try to type something. Enable this to get rid of that bug.");
 		}
 
 		private void DrawFloatInput(ref string text, ref float number)
