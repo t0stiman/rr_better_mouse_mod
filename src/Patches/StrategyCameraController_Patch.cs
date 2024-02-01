@@ -188,9 +188,8 @@ public class StrategyCameraController_UpdateInput_Patch
 
       if (Main.MySettings.ToggleModeEnabled || Main.MySettings.ToggleModeEnabled)
       {
-	      //multiplying by 2 makes it feel consistent with 1st person view
-	      __instance._angleY += __instance._angleYInput * Preferences.MouseLookSpeed * 2f;
-	      __instance._angleX += __instance._angleXInput * Preferences.MouseLookSpeed * 2f;
+	      __instance._angleY += __instance._angleYInput * Preferences.MouseLookSpeed;
+	      __instance._angleX += __instance._angleXInput * Preferences.MouseLookSpeed;
       }
       else
       {
