@@ -6,7 +6,7 @@ using UnityEngine;
 namespace better_mouse_mod.Patches;
 
 /// <summary>
-/// this patch is for the 1st person camera
+/// this patch is for the 1st person camera (CharacterCameraController_Patch is too)
 /// </summary>
 [HarmonyPatch(typeof(PlayerController))]
 [HarmonyPatch(nameof(PlayerController.Update))]
