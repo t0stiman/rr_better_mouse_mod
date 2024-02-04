@@ -139,7 +139,6 @@ public class TrainInput_Update_Patch
 		int inputHeadlight = shared.InputHeadlight;
 		if (inputHeadlight == 0)
 			return;
-		bool hasRearHeadlight = true;
-		Console.Log("Headlight: " + HeadlightToggleLogic.TextForState(HeadlightToggleLogic.SetHeadlightStateOffset(loco.KeyValueObject, hasRearHeadlight, inputHeadlight)));
+		Console.Log("Headlight: " + HeadlightToggleLogic.TextForState(HeadlightToggleLogic.SetHeadlightStateOffset(loco.KeyValueObject, inputHeadlight)));
 	}
 }

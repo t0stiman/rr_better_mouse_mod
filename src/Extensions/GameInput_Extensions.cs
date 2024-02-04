@@ -23,6 +23,4 @@ public static class GameInput_Extensions
 	{
 		return instance._throttleDownRepeating.ActiveThisFrame(repeatInterval);
 	}
-	
-	
 }
