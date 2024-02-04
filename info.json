@@ -1,6 +1,6 @@
 {
 	"Id": "better_mouse_mod",
-	"Version": "0.0.3",
+	"Version": "0.0.4",
 	"DisplayName": "Better controls mod",
 	"Author": "Tostiman",
 	"EntryMethod": "better_mouse_mod.Main.Load",
