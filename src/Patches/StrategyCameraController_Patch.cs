@@ -26,7 +26,19 @@ public class StrategyCameraController_UpdateInput_Patch
     
     Vector3 movement = GameInput.shared.GetMovement(__instance.normalSpeed, __instance.fastSpeed, __instance.fasterSpeed);
     __instance._movementInput = new Vector3(movement.x, 0.0f, movement.z);
-    __instance._angleYInput += movement.y / 5f;
+    
+    // ======= this is changed: ======
+
+    if (Main.MySettings.DisableCameraSmoothing)
+    {
+	    __instance._angleYInput += movement.y / 60f;
+    }
+    else
+    {
+	    __instance._angleYInput += movement.y / 5f;
+    }
+
+    // ======= this is unchanged: ======
     
     bool leftMouseButtonClicked = false;
     bool rightMouseButtonPressed = false;
