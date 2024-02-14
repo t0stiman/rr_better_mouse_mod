@@ -24,11 +24,13 @@ public class StrategyCameraController_UpdateInput_Patch
     __instance._angleXInput = 0.0f;
     __instance._angleYInput = 0.0f;
     
+    // WASD and QE
     Vector3 movement = GameInput.shared.GetMovement(__instance.normalSpeed, __instance.fastSpeed, __instance.fasterSpeed);
     __instance._movementInput = new Vector3(movement.x, 0.0f, movement.z);
     
     // ======= this is changed: ======
-
+    
+    // this is moving the camera with Q and E
     if (Main.MySettings.DisableCameraSmoothing)
     {
 	    __instance._angleYInput += movement.y / 60f;
@@ -104,7 +106,7 @@ public class StrategyCameraController_UpdateInput_Patch
 	    {
 		    __instance._rotateCurrentPosition = Input.mousePosition;
 		    var vector3 = __instance._rotateStartPosition - __instance._rotateCurrentPosition;
-    
+		    
 		    __instance._rotateStartPosition = __instance._rotateCurrentPosition;
 		    __instance._angleYInput = (float) (-(double) vector3.x * 0.85000002384185791);
 		    __instance._angleXInput = vector3.y * 0.5f;
@@ -190,7 +192,7 @@ public class StrategyCameraController_UpdateInput_Patch
         }
       }
       
-      float num = 0.0f;
+      float extraRotationY = 0.0f;
       if (__instance._movementVelocity.magnitude > 1.0 / 1000.0)
       {
         __instance._targetPosition = __instance.SnapToGround(__instance._targetPosition);
@@ -202,20 +204,19 @@ public class StrategyCameraController_UpdateInput_Patch
         (Vector3 position, Quaternion rotation) = __instance.FollowCar.GetMoverTargetPositionRotation();
         __instance._targetPosition = position + vector3_2;
         Quaternion quaternion = Quaternion.Inverse(__instance._followCarInitialRotation);
-        num = (rotation * quaternion).eulerAngles.y;
+        extraRotationY = (rotation * quaternion).eulerAngles.y;
       }
       
-      __instance._extraRotationY = num;
+      __instance._extraRotationY = extraRotationY;
       
       __instance._distanceVelocity = Mathf.Lerp(__instance._distanceVelocity, __instance._distanceInput, t);
       __instance._distance += __instance._distanceVelocity * __instance.ZoomDelta * fixedDeltaTime;
       __instance._distance = Mathf.Clamp(__instance._distance, 1f, 500f);
       
       // ============== changed: ==============
-
-      // multiplying by 1.8 makes the 3rd person camera consistent with the 1st
-      __instance._angleY += __instance._angleYInput * Preferences.MouseLookSpeed * 1.8f;
-      __instance._angleX += __instance._angleXInput * Preferences.MouseLookSpeed * 1.8f;
+      
+      __instance._angleY += __instance._angleYInput * Preferences.MouseLookSpeed;
+      __instance._angleX += __instance._angleXInput * Preferences.MouseLookSpeed;
       
       // ============== end of changed code ==============
       
@@ -226,5 +227,30 @@ public class StrategyCameraController_UpdateInput_Patch
       
       return false; //skip original function
 		}
+	}
+}
+
+/// <summary>
+/// DisableCameraSmoothing
+/// </summary>
+[HarmonyPatch(typeof(StrategyCameraController))]
+[HarmonyPatch(nameof(StrategyCameraController.UpdatePosition))]
+public class StrategyCameraController_UpdatePosition_Patch
+{
+	private static bool Prefix(ref StrategyCameraController __instance)
+	{
+		if (!Main.MySettings.DisableCameraSmoothing)
+		{
+			return true; //execute original function
+		}
+		
+		var rotation = Quaternion.Euler(__instance._angleX, __instance._angleY + __instance._extraRotationY, 0.0f);
+		Vector3 position = __instance._targetPosition + rotation * (Vector3.back * __instance._distance);
+		
+		var transform = __instance.transform;
+		transform.position = position;
+		transform.rotation = rotation;
+
+		return false;
 	}
 }
