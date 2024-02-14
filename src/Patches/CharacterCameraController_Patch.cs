@@ -11,7 +11,7 @@ namespace better_mouse_mod.Patches;
 [HarmonyPatch(nameof(CharacterCameraController.UpdateWithInput))]
 public class CharacterCameraController_UpdateWithInput_Patch
 {
-	private static bool Prefix(ref CharacterCameraController __instance, float deltaTime, float inputPitch, float inputYaw, Lean lean)
+	private static bool Prefix(ref CharacterCameraController __instance, float inputPitch, float inputYaw, Lean lean)
 	{
 		if (!Main.MySettings.DisableCameraSmoothing)
 		{
@@ -27,7 +27,7 @@ public class CharacterCameraController_UpdateWithInput_Patch
 		__instance._targetYaw += inputYaw * __instance.rotationSpeed;
 		
 		//rotate the camera
-		__instance._transform.eulerAngles = new Vector3(__instance._targetPitch, __instance._targetYaw, 0);
+		__instance._transform.localEulerAngles = new Vector3(__instance._targetPitch, __instance._targetYaw, 0);
 		// __instance._transform.localRotation = Quaternion.Slerp(__instance._transform.localRotation, Quaternion.Euler(__instance._targetPitch, __instance._targetYaw, 0.0f), 1);
 		
 		return false; //skip original function
