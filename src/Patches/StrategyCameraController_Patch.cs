@@ -57,9 +57,12 @@ public class StrategyCameraController_UpdateInput_Patch
 		    if (__instance._rotateStarted)
 		    {
 			    __instance._rotateStartPosition = Input.mousePosition;
-			    Cursor.lockState = CursorLockMode.Locked;
+			    if (Main.MySettings.DisableCameraSmoothing)
+			    {
+				    Cursor.lockState = CursorLockMode.Locked;
+			    }
 		    }
-		    else
+		    else if (Main.MySettings.DisableCameraSmoothing)
 		    {
 			    Cursor.lockState = CursorLockMode.None;
 		    }
@@ -70,10 +73,15 @@ public class StrategyCameraController_UpdateInput_Patch
 		    __instance._rotateStarted = true;
 	    }
     }
-    
+
+    if (__instance._rotateStarted && !Main.MySettings.ToggleModeEnabled && !Input.GetMouseButton(Stuff.RIGHT_MOUSE_BUTTON))
+    {
+		  __instance._rotateStarted = false;
+    }
+
     if (__instance._rotateStarted)
     {
-	    if (Main.MySettings.ToggleModeEnabled)
+	    if (Main.MySettings.DisableCameraSmoothing)
 	    {
 		    var lookInput = GameInput.shared.LookDelta;
 		    //y and x intentionally reversed
@@ -84,12 +92,11 @@ public class StrategyCameraController_UpdateInput_Patch
 	    {
 		    __instance._rotateCurrentPosition = Input.mousePosition;
 		    var vector3 = __instance._rotateStartPosition - __instance._rotateCurrentPosition;
-      
+    
 		    __instance._rotateStartPosition = __instance._rotateCurrentPosition;
-		    __instance._angleYInput =(float) (-(double) vector3.x * 0.85000002384185791);
+		    __instance._angleYInput = (float) (-(double) vector3.x * 0.85000002384185791);
 		    __instance._angleXInput = vector3.y * 0.5f;
 	    }
-      
     }
 
 		return false; //skip original function
@@ -134,8 +141,15 @@ public class StrategyCameraController_UpdateInput_Patch
 	[HarmonyPatch(nameof(StrategyCameraController.UpdateCameraPosition))]
 	public class StrategyCameraController_UpdateCameraPosition_Patch
 	{
-		private static bool Prefix(ref StrategyCameraController __instance, ref bool immediate)
+		private static bool Prefix(ref StrategyCameraController __instance, bool immediate)
 		{
+			if (!Main.MySettings.DisableCameraSmoothing)
+			{
+				return true; //execute original function
+			}
+			
+			// ============== unchanged: ==============
+			
 			float fixedDeltaTime = Time.fixedDeltaTime;
       bool followingCar = __instance.FollowCar != null;
       
@@ -185,20 +199,13 @@ public class StrategyCameraController_UpdateInput_Patch
       __instance._distance += __instance._distanceVelocity * __instance.ZoomDelta * fixedDeltaTime;
       __instance._distance = Mathf.Clamp(__instance._distance, 1f, 500f);
       
+      // ============== changed: ==============
 
-      if (Main.MySettings.ToggleModeEnabled || Main.MySettings.ToggleModeEnabled)
-      {
-	      __instance._angleY += __instance._angleYInput * Preferences.MouseLookSpeed;
-	      __instance._angleX += __instance._angleXInput * Preferences.MouseLookSpeed;
-      }
-      else
-      {
-	      __instance._angleXVelocity = Mathf.Lerp(__instance._angleXVelocity, __instance._angleXInput, t);
-	      __instance._angleYVelocity = Mathf.Lerp(__instance._angleYVelocity, __instance._angleYInput, t);
-	      
-	      __instance._angleX += __instance._angleXVelocity * __instance.zoomAngleSpeed * fixedDeltaTime;
-	      __instance._angleY += __instance._angleYVelocity * __instance.zoomAngleYSpeed * fixedDeltaTime;
-      }
+      // multiplying by 1.8 makes the 3rd person camera consistent with the 1st
+      __instance._angleY += __instance._angleYInput * Preferences.MouseLookSpeed * 1.8f;
+      __instance._angleX += __instance._angleXInput * Preferences.MouseLookSpeed * 1.8f;
+      
+      // ============== end of changed code ==============
       
       __instance._angleX = Mathf.Clamp(__instance._angleX, -30f, 90f);
       

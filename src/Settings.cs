@@ -8,8 +8,8 @@ namespace better_mouse_mod
 	{
 		//Camera
 		public bool ToggleModeEnabled = true;
+		public bool DisableCameraSmoothing = true;
 		public bool DisableLeftClickPanning = true;
-		// public bool DisableCameraSmoothing => ToggleModeEnabled; //todo separate setting
 		
 		//Pause menu
 		public bool DisableEscapeWindowClose = false;
@@ -44,7 +44,8 @@ namespace better_mouse_mod
 			//Camera
 			GUILayout.Label("Camera: ");
 			
-			ToggleModeEnabled = GUILayout.Toggle(ToggleModeEnabled, "Toggle camera movement instead of hold and disable camera smoothing");
+			ToggleModeEnabled = GUILayout.Toggle(ToggleModeEnabled, "Toggle camera movement instead of hold");
+			DisableCameraSmoothing = GUILayout.Toggle(DisableCameraSmoothing, "Disable camera smoothing");
 			DisableLeftClickPanning = GUILayout.Toggle(DisableLeftClickPanning, "Disable camera panning with left mouse click");
 			
 			//Pause menu

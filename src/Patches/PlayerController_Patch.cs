@@ -12,36 +12,49 @@ namespace better_mouse_mod.Patches;
 [HarmonyPatch(nameof(PlayerController.Update))]
 public class PlayerController_Update_Patch
 {
+	private static bool cameraMovingMode = false;
+	
 	private static bool Prefix(ref PlayerController __instance)
 	{
-		if (!Main.MySettings.ToggleModeEnabled)
+		if (!Main.MySettings.ToggleModeEnabled && !Main.MySettings.DisableCameraSmoothing)
 		{
 			return true; //execute original function
 		}
 		
 		if (__instance._isSelected)
 		{
-			if (Input.GetMouseButtonDown(Stuff.RIGHT_MOUSE_BUTTON))
-			{
-				Main.CameraMovingMode = !Main.CameraMovingMode;
-				
-				if (Main.CameraMovingMode)
-				{
-					PlayerController._mouseMovesCamera = true;
-					Cursor.lockState = CursorLockMode.Locked;
-				}
-				else
-				{
-					PlayerController._mouseMovesCamera = false;
-					Cursor.lockState = CursorLockMode.None;
-				}
-			}
+			bool startLooking = false;
+			bool stopLooking = false;
 			
+			if (Main.MySettings.ToggleModeEnabled && Input.GetMouseButtonDown(Stuff.RIGHT_MOUSE_BUTTON))
+			{
+				cameraMovingMode = !cameraMovingMode;
+				startLooking = cameraMovingMode;
+				stopLooking = !cameraMovingMode;
+			}
+			else if(!Main.MySettings.ToggleModeEnabled)
+			{
+				var shared = GameInput.shared;
+				startLooking = shared.LookEnableDown;
+				stopLooking = shared.LookEnableUp;
+			}
+
+			if (startLooking)
+			{
+				PlayerController._mouseMovesCamera = true;
+				Cursor.lockState = CursorLockMode.Locked;
+			}
+			else if(stopLooking)
+			{
+				PlayerController._mouseMovesCamera = false;
+				Cursor.lockState = CursorLockMode.None;
+			}
+		
 			var lookDelta = PlayerController._mouseMovesCamera ? GameInput.shared.LookDelta : Vector2.zero;
 			float cameraMoveX = __instance.CameraXMultiplier * lookDelta.x;
 			float cameraMoveY = __instance.CameraYMultiplier * lookDelta.y;
 			
-			if (Main.MySettings.ToggleModeEnabled)
+			if (Main.MySettings.DisableCameraSmoothing)
 			{
 				__instance._inputLookPitch = cameraMoveY;
 				__instance._inputLookYaw = cameraMoveX;
@@ -70,7 +83,7 @@ public class PlayerController_HandleCameraInput_Patch
 {
 	private static bool Prefix(ref PlayerController __instance)
 	{
-		if (!Main.MySettings.ToggleModeEnabled)
+		if (!Main.MySettings.DisableCameraSmoothing)
 		{
 			return true; //execute original function
 		}

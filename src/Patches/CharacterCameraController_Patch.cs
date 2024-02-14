@@ -13,7 +13,7 @@ public class CharacterCameraController_UpdateWithInput_Patch
 {
 	private static bool Prefix(ref CharacterCameraController __instance, float deltaTime, float inputPitch, float inputYaw, Lean lean)
 	{
-		if (!Main.MySettings.ToggleModeEnabled)
+		if (!Main.MySettings.DisableCameraSmoothing)
 		{
 			return true; //execute original function
 		}

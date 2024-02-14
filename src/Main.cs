@@ -12,7 +12,6 @@ static class Main
 	private static UnityModManager.ModEntry myModEntry;
 	private static Harmony myHarmony;
 	public static Settings MySettings { get; private set; }
-	public static bool CameraMovingMode = false;
 
 	//================================================================
 
