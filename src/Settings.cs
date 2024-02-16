@@ -30,8 +30,9 @@ namespace better_mouse_mod
 		public float Smooth_RepeatInterval = 0.01f; //0.05 is the default in VirtualRepeatingInput constructor
 		private string Smooth_RepeatInterval_text;
 		
-		//console
+		//others
 		public bool EnableConsolePatch = false;
+		public bool ZoomDependentSwitchRange = true;
 
 		public void Setup()
 		{
@@ -52,12 +53,12 @@ namespace better_mouse_mod
 			GUILayout.Space(20);
 			GUILayout.Label("Pause menu: ");
 			
-			DisableEscapeWindowClose = GUILayout.Toggle(DisableEscapeWindowClose, "Disable closing windows with the escape button, so you can pause without closing all windows");
+			DisableEscapeWindowClose = GUILayout.Toggle(DisableEscapeWindowClose, "Disable closing windows with the escape button, so you can pause without closing all windows (you need to restart the game to apply this)");
 			PauseWithPauseButton = GUILayout.Toggle(PauseWithPauseButton, "Pause the game with the pause/break button on your keyboard, so you don't have to close all windows to do so");
 			
 			//Vehicle controls
 			GUILayout.Space(20);
-			GUILayout.Label("Notched controls: ");
+			GUILayout.Label("Vehicle controls: ");
 			
 			ChangeThrottleNotchCount_Steam = GUILayout.Toggle(ChangeThrottleNotchCount_Steam, "Change the amount of throttle notches on steam locomotives");
 			if (ChangeThrottleNotchCount_Steam)
@@ -80,11 +81,12 @@ namespace better_mouse_mod
 			GUILayout.Label("Repeat interval for smooth (non-notched) controls (recommended: 0.01):");
 			DrawFloatInput(ref Smooth_RepeatInterval_text, ref Smooth_RepeatInterval);
 			
-			// console
+			// others
 			GUILayout.Space(20);
-			GUILayout.Label("Console: ");
+			GUILayout.Label("Other tweaks: ");
 			
 			EnableConsolePatch = GUILayout.Toggle(EnableConsolePatch, "Enable console patch. There is a bug where the console would close when you try to type something. Enable this to get rid of that bug.");
+			ZoomDependentSwitchRange = GUILayout.Toggle(ZoomDependentSwitchRange, "Make the click range of switches dependent on your FOV. Zoom in to select switches further away");
 		}
 
 		private void DrawFloatInput(ref string text, ref float number)
