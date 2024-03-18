@@ -33,6 +33,11 @@ namespace better_mouse_mod
 		//others
 		public bool EnableConsolePatch = false;
 		public bool ZoomDependentSwitchRange = true;
+		public bool PlaceAvatarInChairOnSelectCar = false;
+		
+		//logging stuff
+		public bool LogToConsole = false;
+		public bool EnableDebugLogs = false;
 
 		public void Setup()
 		{
@@ -45,9 +50,9 @@ namespace better_mouse_mod
 			//Camera
 			GUILayout.Label("Camera: ");
 			
-			ToggleModeEnabled = GUILayout.Toggle(ToggleModeEnabled, "Toggle camera movement instead of hold");
-			DisableCameraSmoothing = GUILayout.Toggle(DisableCameraSmoothing, "Disable camera smoothing");
-			DisableLeftClickPanning = GUILayout.Toggle(DisableLeftClickPanning, "Disable camera panning with left mouse click");
+			ToggleModeEnabled = GUILayout.Toggle(ToggleModeEnabled, "Toggle camera movement with right click instead of holding");
+			DisableCameraSmoothing = GUILayout.Toggle(DisableCameraSmoothing, "Disable camera smoothing, makes the controls much more precise");
+			DisableLeftClickPanning = GUILayout.Toggle(DisableLeftClickPanning, "Disable camera panning with left mouse click. This prevents accidental panning when miss-clicking");
 			
 			//Pause menu
 			GUILayout.Space(20);
@@ -85,8 +90,16 @@ namespace better_mouse_mod
 			GUILayout.Space(20);
 			GUILayout.Label("Other tweaks: ");
 			
-			EnableConsolePatch = GUILayout.Toggle(EnableConsolePatch, "Enable console patch. There is a bug where the console would close when you try to type something. Enable this to get rid of that bug.");
-			ZoomDependentSwitchRange = GUILayout.Toggle(ZoomDependentSwitchRange, "Make the click range of switches dependent on your FOV. Zoom in to select switches further away");
+			EnableConsolePatch = GUILayout.Toggle(EnableConsolePatch, "Enable console patch. There is a bug in Railroader where the console would close when you try to type something. Enable this to get rid of that bug.");
+			ZoomDependentSwitchRange = GUILayout.Toggle(ZoomDependentSwitchRange, "Flip switches from further away when you zoom in with your camera.");
+			PlaceAvatarInChairOnSelectCar = GUILayout.Toggle(PlaceAvatarInChairOnSelectCar, "When you select a locomotive, place your avatar in an unoccupied seat in the locomotive.");
+			
+			// logging stuff
+			GUILayout.Space(20);
+			GUILayout.Label("Logging stuff: ");
+
+			LogToConsole = GUILayout.Toggle(LogToConsole, "Log messages to the in-game console as well as Player.log");
+			EnableDebugLogs = GUILayout.Toggle(EnableDebugLogs, "Enable debug messages");
 		}
 
 		private void DrawFloatInput(ref string text, ref float number)

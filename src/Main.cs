@@ -59,18 +59,44 @@ static class Main
 	}
 
 	// Logger Commands
-	public static void Log(string message)
+	public static void Debug(string message)
 	{
+		if (!MySettings.EnableDebugLogs)
+		{
+			return;
+		}
+		
+		if (MySettings.LogToConsole)
+		{
+			Console.Log($"{myModEntry.Info.Id}[DEBUG]{message}");
+		}
+		myModEntry.Logger.Log(message);
+	}
+	
+	public static void Info(string message)
+	{
+		if (MySettings.LogToConsole)
+		{
+			Console.Log($"{myModEntry.Info.Id}[INFO]{message}");
+		}
 		myModEntry.Logger.Log(message);
 	}
 
 	public static void Warning(string message)
 	{
+		if (MySettings.LogToConsole)
+		{
+			Console.Log($"{myModEntry.Info.Id}[WARNING]{message}");
+		}
 		myModEntry.Logger.Warning(message);
 	}
 
 	public static void Error(string message)
 	{
+		if (MySettings.LogToConsole)
+		{
+			Console.Log($"{myModEntry.Info.Id}[ERROR]{message}");
+		}
 		myModEntry.Logger.Error(message);
 	}
 }
