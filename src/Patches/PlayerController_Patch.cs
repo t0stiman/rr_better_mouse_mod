@@ -18,7 +18,7 @@ public class PlayerController_JumpToCar_Patch
 		}
 
 		TrainController.Shared.SelectedCar = car;
-		CameraSelectorFinder.GetCameraSelector().JumpToSeatWithoutCameraChange();
+		CameraSelector.shared.JumpToSeatWithoutCameraChange();
 		return false; //skip original function
 	}
 }

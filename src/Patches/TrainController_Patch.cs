@@ -19,7 +19,7 @@ public class TrainController_Patch
 		{
 			return;
 		}
-
-		CameraSelectorFinder.GetCameraSelector().JumpToSeatWithoutCameraChange();
+		
+		CameraSelector.shared.JumpToSeatWithoutCameraChange();
 	}
 }
