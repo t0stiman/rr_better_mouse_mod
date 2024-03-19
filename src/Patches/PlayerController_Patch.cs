@@ -1,9 +1,27 @@
-﻿using Character;
+﻿using better_mouse_mod.Extensions;
+using Character;
 using HarmonyLib;
 using UI;
 using UnityEngine;
 
 namespace better_mouse_mod.Patches;
+
+[HarmonyPatch(typeof(PlayerController))]
+[HarmonyPatch(nameof(PlayerController.JumpToCar))]
+public class PlayerController_JumpToCar_Patch
+{
+	private static bool Prefix(Model.Car car)
+	{
+		if (!Main.MySettings.SwitchCarsWithButton)
+		{
+			return true;
+		}
+
+		TrainController.Shared.SelectedCar = car;
+		CameraSelectorFinder.GetCameraSelector().JumpToSeatWithoutCameraChange();
+		return false; //skip original function
+	}
+}
 
 /// <summary>
 /// this patch is for the 1st person camera (CharacterCameraController_Patch is too)

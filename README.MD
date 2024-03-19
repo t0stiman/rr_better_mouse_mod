@@ -20,6 +20,7 @@ Other tweaks:
 - Enable console patch. There is a bug in Railroader where the console would close when you try to type something. Enable this to get rid of that bug.
 - Flip switches from further away when you zoom in with your camera.
 - When you select a locomotive, place your avatar in an unoccupied seat in the locomotive.
+- Select the next locomotive with PAGE DOWN, previous with PAGE UP.
 
 ## How to install
 

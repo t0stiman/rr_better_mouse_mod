@@ -2,6 +2,11 @@
     "Releases": [
         {
             "Id": "better_mouse_mod",
+            "Version": "0.0.6",
+            "DownloadUrl": "https://github.com/t0stiman/rr_better_mouse_mod/releases/download/v0.0.6/better_mouse_mod.zip"
+        },
+        {
+            "Id": "better_mouse_mod",
             "Version": "0.0.5",
             "DownloadUrl": "https://github.com/t0stiman/rr_better_mouse_mod/releases/download/v0.0.5/better_mouse_mod.zip"
         },

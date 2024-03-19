@@ -34,6 +34,7 @@ namespace better_mouse_mod
 		public bool EnableConsolePatch = false;
 		public bool ZoomDependentSwitchRange = true;
 		public bool PlaceAvatarInChairOnSelectCar = false;
+		public bool SwitchCarsWithButton = true;
 		
 		//logging stuff
 		public bool LogToConsole = false;
@@ -91,8 +92,10 @@ namespace better_mouse_mod
 			GUILayout.Label("Other tweaks: ");
 			
 			EnableConsolePatch = GUILayout.Toggle(EnableConsolePatch, "Enable console patch. There is a bug in Railroader where the console would close when you try to type something. Enable this to get rid of that bug.");
-			ZoomDependentSwitchRange = GUILayout.Toggle(ZoomDependentSwitchRange, "Flip switches from further away when you zoom in with your camera.");
-			PlaceAvatarInChairOnSelectCar = GUILayout.Toggle(PlaceAvatarInChairOnSelectCar, "When you select a locomotive, place your avatar in an unoccupied seat in the locomotive.");
+			ZoomDependentSwitchRange = GUILayout.Toggle(ZoomDependentSwitchRange, "Flip switches from further away when you zoom in with your camera");
+			PlaceAvatarInChairOnSelectCar = GUILayout.Toggle(PlaceAvatarInChairOnSelectCar, "When you select a locomotive, place your avatar in an unoccupied seat in the locomotive");
+			SwitchCarsWithButton =
+				GUILayout.Toggle(SwitchCarsWithButton, "Select the next locomotive with PAGE DOWN, previous with PAGE UP");
 			
 			// logging stuff
 			GUILayout.Space(20);
