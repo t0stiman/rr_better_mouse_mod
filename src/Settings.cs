@@ -1,5 +1,4 @@
-﻿using UI;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityModManagerNet;
 
 namespace better_mouse_mod
@@ -13,7 +12,9 @@ namespace better_mouse_mod
 		
 		//Pause menu
 		public bool DisableEscapeWindowClose = false;
-		public bool PauseWithPauseButton = true;
+		public bool PauseWithKey = true;
+		public KeyCode PauseKeyCode = KeyCode.Pause;
+		private bool SelectingKeyCode = false;
 		
 		//Vehicle controls
 		public bool ChangeThrottleNotchCount_Steam = false;
@@ -62,7 +63,23 @@ namespace better_mouse_mod
 			GUILayout.Label("Pause menu: ");
 			
 			DisableEscapeWindowClose = GUILayout.Toggle(DisableEscapeWindowClose, "Disable closing windows with the escape button, so you can pause without closing all windows (you need to restart the game to apply this)");
-			PauseWithPauseButton = GUILayout.Toggle(PauseWithPauseButton, "Pause the game with the pause/break button on your keyboard, so you don't have to close all windows to do so");
+			PauseWithKey = GUILayout.Toggle(PauseWithKey, "Pause the game with a single keystroke, so you don't have to close all windows to do so. Defaults to the PAUSE key, but can be changed below.");
+			if (PauseWithKey)
+			{
+				GUILayout.BeginHorizontal();
+				GUILayout.Label("Pause key:");
+				if (GUILayout.Button(SelectingKeyCode ? "Press key…" : PauseKeyCode.ToString(), GUILayout.ExpandWidth(false)))
+				{
+					SelectingKeyCode = !SelectingKeyCode;
+				}
+				if (SelectingKeyCode && Event.current.isKey)
+				{
+					PauseKeyCode = Event.current.keyCode;
+					SelectingKeyCode = false;
+				}
+				GUILayout.FlexibleSpace();
+				GUILayout.EndHorizontal();
+			}
 			
 			//Vehicle controls
 			GUILayout.Space(20);
