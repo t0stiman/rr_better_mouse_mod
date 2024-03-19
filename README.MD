@@ -16,11 +16,13 @@ Vehicle controls:
 - Change the amount of throttle notches on diesel locomotives.
 - Change how fast vehicle control inputs should be repeated when holding the button.
 
-Other tweaks:  
-- Enable console patch. There is a bug in Railroader where the console would close when you try to type something. Enable this to get rid of that bug.
-- Flip switches from further away when you zoom in with your camera.
+Locomotive switching:  
 - When you select a locomotive, place your avatar in an unoccupied seat in the locomotive.
 - Select the next locomotive with PAGE DOWN, previous with PAGE UP.
+
+Other tweaks:  
+- Console patch. There is a bug in Railroader where the console would close when you try to type something. Enable this to get rid of that bug.
+- Flip switches from further away when you zoom in with your camera.
 
 ## How to install
 
