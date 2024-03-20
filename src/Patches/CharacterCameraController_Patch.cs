@@ -23,12 +23,6 @@ public class CharacterCameraController_UpdateWithInput_Patch
 		{
 			return false;
 		}
-		
-		if (lean != __instance._lastLean)
-		{
-			__instance._targetYaw = 0.0f;
-			__instance._lastLean = lean;
-		}
 
 		// X and Y multiplier should be the same
 		var lookDelta = GameInput.shared.LookDelta * CameraSelector.shared.character.CameraXMultiplier;

@@ -18,6 +18,12 @@ public static class CharacterController_SetInputs_Patch
 		{
 			return;
 		}
+
+		//rotating the character while leaning would move the camera
+		if (inputs.Lean != Lean.Off)
+		{
+			return;
+		}
 		
 		var firstPersonCamHorizontalRotation = CameraSelector.shared.character.cameraController._targetYaw;
 		__instance.motor.RotateCharacter(Quaternion.Euler(__instance.transform.localRotation.x, firstPersonCamHorizontalRotation, __instance.transform.localRotation.z));
