@@ -67,18 +67,13 @@ public class PlayerController_Update_Patch
 				PlayerController._mouseMovesCamera = false;
 				Cursor.lockState = CursorLockMode.None;
 			}
-		
-			var lookDelta = PlayerController._mouseMovesCamera ? GameInput.shared.LookDelta : Vector2.zero;
-			float cameraMoveX = __instance.CameraXMultiplier * lookDelta.x;
-			float cameraMoveY = __instance.CameraYMultiplier * lookDelta.y;
 			
-			if (Main.MySettings.DisableCameraSmoothing)
+			if (!Main.MySettings.DisableCameraSmoothing)
 			{
-				__instance._inputLookPitch = cameraMoveY;
-				__instance._inputLookYaw = cameraMoveX;
-			}
-			else
-			{
+				var lookDelta = PlayerController._mouseMovesCamera ? GameInput.shared.LookDelta : Vector2.zero;
+				float cameraMoveX = __instance.CameraXMultiplier * lookDelta.x;
+				float cameraMoveY = __instance.CameraYMultiplier * lookDelta.y;
+				
 				float t = 1f - Mathf.Exp(-__instance.cameraInputSharpness * Time.deltaTime);
 				__instance._inputLookPitch = Mathf.Lerp(__instance._inputLookPitch, cameraMoveY, t);
 				__instance._inputLookYaw = Mathf.Lerp(__instance._inputLookYaw, cameraMoveX, t);
