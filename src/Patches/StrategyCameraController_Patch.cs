@@ -42,12 +42,13 @@ public class StrategyCameraController_UpdateInput_Patch
 
     // ======= this is unchanged: ======
     
-    bool leftMouseButtonClicked = false;
-    bool rightMouseButtonPressed = false;
+    bool doPanning = false;
+    bool doLookEnable = false;
     if (!GameInput.IsMouseOverUI(out TooltipInfo _, out string _))
     {
-	    leftMouseButtonClicked = Input.GetMouseButtonDown(Stuff.LEFT_MOUSE_BUTTON) && !ObjectPicker.Shared.IsOverObject;
-      rightMouseButtonPressed = Input.GetMouseButtonDown(Stuff.RIGHT_MOUSE_BUTTON);
+	    //why don't they use GameInput for this?
+	    doPanning = Input.GetMouseButtonDown(Stuff.LEFT_MOUSE_BUTTON) && !ObjectPicker.Shared.IsOverObject;
+      doLookEnable = GameInput.shared.LookEnableDown;
     }
 
     if (GameInput.IsMouseOverGameWindow() && Math.Abs(Input.mouseScrollDelta.y) > 1.0 / 1000.0)
@@ -59,10 +60,10 @@ public class StrategyCameraController_UpdateInput_Patch
     
     if (!Main.MySettings.DisableLeftClickPanning)
     {
-	    HandlePanning(ref __instance, leftMouseButtonClicked);
+	    HandlePanning(ref __instance, doPanning);
     }
     
-    if (rightMouseButtonPressed)
+    if (doLookEnable)
     {
 	    if (Main.MySettings.ToggleModeEnabled)
 	    {
@@ -123,7 +124,7 @@ public class StrategyCameraController_UpdateInput_Patch
 	/// <param name="leftMouseButtonClicked"></param>
 	private static void HandlePanning(ref StrategyCameraController __instance, bool leftMouseButtonClicked)
 	{
-		bool mouseButton = Input.GetMouseButton(Stuff.LEFT_MOUSE_BUTTON);
+		bool holdingLeftMouse = Input.GetMouseButton(Stuff.LEFT_MOUSE_BUTTON);
 		Vector3 point;
 
 		if (leftMouseButtonClicked && __instance.RayPointFromMouse(out point))
@@ -134,7 +135,7 @@ public class StrategyCameraController_UpdateInput_Patch
 			__instance._panPlane = new Plane(Vector3.up, point);
 			__instance.FollowCar = null;
 		}
-		else if (mouseButton && __instance._panStartPosition.HasValue)
+		else if (holdingLeftMouse && __instance._panStartPosition.HasValue)
 		{
 			Vector3 vector3 = __instance.CameraContainer.position - __instance._panStartCameraPosition;
 			Ray mouseRay = __instance.GetMouseRay();

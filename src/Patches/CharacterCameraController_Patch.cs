@@ -5,7 +5,7 @@ using UnityEngine;
 namespace better_mouse_mod.Patches;
 
 /// <summary>
-/// __instance patch is for the 1st person camera (PlayerController_Patch is too)
+/// move the 1st person camera vertically. Horizontal movement is done by moving the character (TODO welke class) 
 /// </summary>
 [HarmonyPatch(typeof(CharacterCameraController))]
 [HarmonyPatch(nameof(CharacterCameraController.UpdateWithInput))]
@@ -18,7 +18,11 @@ public class CharacterCameraController_UpdateWithInput_Patch
 			return true; //execute original function
 		}
 		
-		__instance._lastLean = lean;
+		if (lean != __instance._lastLean)
+		{
+			__instance._targetYaw = 0.0f;
+			__instance._lastLean = lean;
+		}
 		
 		//vertical
 		__instance._targetPitch -= inputPitch * __instance.rotationSpeed;
@@ -28,7 +32,6 @@ public class CharacterCameraController_UpdateWithInput_Patch
 		
 		//rotate the camera
 		__instance._transform.localEulerAngles = new Vector3(__instance._targetPitch, __instance._targetYaw, 0);
-		// __instance._transform.localRotation = Quaternion.Slerp(__instance._transform.localRotation, Quaternion.Euler(__instance._targetPitch, __instance._targetYaw, 0.0f), 1);
 		
 		return false; //skip original function
 	}

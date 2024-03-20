@@ -24,7 +24,7 @@ public class PlayerController_JumpToCar_Patch
 }
 
 /// <summary>
-/// this patch is for the 1st person camera (CharacterCameraController_Patch is too)
+/// this patch is for moving the player character while in 1st person view
 /// </summary>
 [HarmonyPatch(typeof(PlayerController))]
 [HarmonyPatch(nameof(PlayerController.Update))]
@@ -44,7 +44,7 @@ public class PlayerController_Update_Patch
 			bool startLooking = false;
 			bool stopLooking = false;
 			
-			if (Main.MySettings.ToggleModeEnabled && Input.GetMouseButtonDown(Stuff.RIGHT_MOUSE_BUTTON))
+			if (Main.MySettings.ToggleModeEnabled && GameInput.shared.LookEnableDown)
 			{
 				cameraMovingMode = !cameraMovingMode;
 				startLooking = cameraMovingMode;
@@ -91,31 +91,6 @@ public class PlayerController_Update_Patch
 		}
 		__instance.HandleCharacterInput();
 		
-		return false; //skip original function
-	}
-}
-
-[HarmonyPatch(typeof(PlayerController))]
-[HarmonyPatch(nameof(PlayerController.HandleCameraInput))]
-public class PlayerController_HandleCameraInput_Patch
-{
-	private static bool Prefix(ref PlayerController __instance)
-	{
-		if (!Main.MySettings.DisableCameraSmoothing)
-		{
-			return true; //execute original function
-		}
-		
-		if (!GameInput.movementInputEnabled || !__instance._isSelected) {
-			return false;
-		}
-		
-		__instance.cameraController.UpdateWithInput(
-			Time.deltaTime,
-			__instance._inputLookPitch,
-			__instance._inputLookYaw,
-			__instance._characterInputs.Lean);
-
 		return false; //skip original function
 	}
 }
