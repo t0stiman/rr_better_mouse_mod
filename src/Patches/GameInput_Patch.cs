@@ -73,7 +73,7 @@ public class GameInput_Update_Patch
 	/// </summary>
 	private static void PauseStuff()
 	{
-		if (Main.MySettings.PauseWithPauseButton && Input.GetKeyDown(KeyCode.Pause))
+		if (Main.MySettings.PauseWithKey && Input.GetKeyDown(Main.MySettings.PauseKeyCode))
 		{
 			Func<bool> func;
 			if (GameInput._escapeHandlers.TryGetValue(GameInput.EscapeHandler.Pause, out func) && func())
