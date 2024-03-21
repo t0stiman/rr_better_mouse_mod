@@ -14,11 +14,11 @@ public class WindowManager_OnEnable_Patch
 	{
 		if (!Main.MySettings.DisableEscapeWindowClose)
 		{
-			return true; //execute original function
+			return Constants.EXECUTE_ORIGINAL;
 		}
 		
 		__instance.CloseAllWindows();
 		
-		return false; //skip original function
+		return Constants.SKIP_ORIGINAL;
 	}
 }

@@ -17,11 +17,11 @@ public class SteamLocomotiveControl_ThrottleNotches_Patch
 	{
 		if (!Main.MySettings.ChangeThrottleNotchCount_Steam)
 		{
-			return true; //execute original function
+			return Constants.EXECUTE_ORIGINAL;
 		}
 		
 		__result = Main.MySettings.ThrottleNotchCount_Steam;
-		return false; //skip original function
+		return Constants.SKIP_ORIGINAL;
 	}
 }
 
@@ -35,11 +35,11 @@ public class DieselLocomotiveControl_ThrottleNotches_Patch
 	{
 		if (!Main.MySettings.ChangeThrottleNotchCount_Diesel)
 		{
-			return true; //execute original function
+			return Constants.EXECUTE_ORIGINAL;
 		}
 		
 		__result = Main.MySettings.ThrottleNotchCount_Diesel;
-		return false; //skip original function
+		return Constants.SKIP_ORIGINAL;
 	}
 }
 
@@ -51,11 +51,11 @@ public class DieselLocomotiveControl_AbstractThrottle_Getter_Patch
 	{
 		if (!Main.MySettings.ChangeThrottleNotchCount_Diesel)
 		{
-			return true; //execute original function
+			return Constants.EXECUTE_ORIGINAL;
 		}
 		
 		__result = (float) __instance.primeMover.notch / __instance.ThrottleNotches;
-		return false; //skip original function
+		return Constants.SKIP_ORIGINAL;
 	}
 }
 
@@ -67,7 +67,7 @@ public class DieselLocomotiveControl_AbstractThrottle_Setter_Patch
 	{
 		if (!Main.MySettings.ChangeThrottleNotchCount_Diesel)
 		{
-			return true; //execute original function
+			return Constants.EXECUTE_ORIGINAL;
 		}
 		
 		__instance.primeMover.notch = Mathf.RoundToInt(value * __instance.ThrottleNotches);
@@ -76,6 +76,6 @@ public class DieselLocomotiveControl_AbstractThrottle_Setter_Patch
 			__instance.audio.primeMover.Notch = __instance.primeMover.notch;
 		}
 		
-		return false; //skip original function
+		return Constants.SKIP_ORIGINAL;
 	}
 }

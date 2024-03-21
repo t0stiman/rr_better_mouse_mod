@@ -101,7 +101,7 @@ public class GameInput_TrainBrakeApply_Patch
 	{
 		__result = __instance._trainBrakeApplyRepeating.ActiveThisFrame(Main.MySettings.Smooth_RepeatInterval);
 
-		return false; //skip original function
+		return Constants.SKIP_ORIGINAL;
 	}
 }
 
@@ -113,7 +113,7 @@ public class GameInput_TrainBrakeRelease_Patch
 	{
 		__result = __instance._trainBrakeReleaseRepeating.ActiveThisFrame(Main.MySettings.Smooth_RepeatInterval);
 
-		return false; //skip original function
+		return Constants.SKIP_ORIGINAL;
 	}
 }
 
@@ -126,7 +126,7 @@ public class GameInput_LocomotiveBrakeApply_Patch
 	{
 		__result = __instance._locomotiveBrakeApplyRepeating.ActiveThisFrame(Main.MySettings.Smooth_RepeatInterval);
 
-		return false; //skip original function
+		return Constants.SKIP_ORIGINAL;
 	}
 }
 
@@ -138,6 +138,6 @@ public class GameInput_LocomotiveBrakeRelease_Patch
 	{
 		__result = __instance._locomotiveBrakeReleaseRepeating.ActiveThisFrame(Main.MySettings.Smooth_RepeatInterval);
 
-		return false; //skip original function
+		return Constants.SKIP_ORIGINAL;
 	}
 }

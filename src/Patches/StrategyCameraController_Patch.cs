@@ -47,7 +47,7 @@ public class StrategyCameraController_UpdateInput_Patch
     if (!GameInput.IsMouseOverUI(out TooltipInfo _, out string _))
     {
 	    //why don't they use GameInput for this?
-	    doPanning = Input.GetMouseButtonDown(Stuff.LEFT_MOUSE_BUTTON) && !ObjectPicker.Shared.IsOverObject;
+	    doPanning = Input.GetMouseButtonDown(Constants.LEFT_MOUSE_BUTTON) && !ObjectPicker.Shared.IsOverObject;
       doLookEnable = GameInput.shared.LookEnableDown;
     }
 
@@ -89,7 +89,7 @@ public class StrategyCameraController_UpdateInput_Patch
 	    }
     }
 
-    if (__instance._rotateStarted && !Main.MySettings.ToggleModeEnabled && !Input.GetMouseButton(Stuff.RIGHT_MOUSE_BUTTON))
+    if (__instance._rotateStarted && !Main.MySettings.ToggleModeEnabled && !Input.GetMouseButton(Constants.RIGHT_MOUSE_BUTTON))
     {
 		  __instance._rotateStarted = false;
     }
@@ -114,7 +114,7 @@ public class StrategyCameraController_UpdateInput_Patch
 	    }
     }
 
-		return false; //skip original function
+		return Constants.SKIP_ORIGINAL;
 	}
 
 	/// <summary>
@@ -124,7 +124,7 @@ public class StrategyCameraController_UpdateInput_Patch
 	/// <param name="leftMouseButtonClicked"></param>
 	private static void HandlePanning(ref StrategyCameraController __instance, bool leftMouseButtonClicked)
 	{
-		bool holdingLeftMouse = Input.GetMouseButton(Stuff.LEFT_MOUSE_BUTTON);
+		bool holdingLeftMouse = Input.GetMouseButton(Constants.LEFT_MOUSE_BUTTON);
 		Vector3 point;
 
 		if (leftMouseButtonClicked && __instance.RayPointFromMouse(out point))
@@ -160,7 +160,7 @@ public class StrategyCameraController_UpdateInput_Patch
 		{
 			if (!Main.MySettings.DisableCameraSmoothing)
 			{
-				return true; //execute original function
+				return Constants.EXECUTE_ORIGINAL;
 			}
 			
 			// ============== unchanged: ==============
@@ -226,7 +226,7 @@ public class StrategyCameraController_UpdateInput_Patch
       __instance.ClampPitchToGround(__instance.transform.position, 1f);
       __instance.UpdatePosition(immediate);
       
-      return false; //skip original function
+      return Constants.SKIP_ORIGINAL;
 		}
 	}
 }
@@ -242,7 +242,7 @@ public class StrategyCameraController_UpdatePosition_Patch
 	{
 		if (!Main.MySettings.DisableCameraSmoothing)
 		{
-			return true; //execute original function
+			return Constants.EXECUTE_ORIGINAL;
 		}
 		
 		var rotation = Quaternion.Euler(__instance._angleX, __instance._angleY + __instance._extraRotationY, 0.0f);

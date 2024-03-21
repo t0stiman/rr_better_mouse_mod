@@ -11,7 +11,7 @@ public class ExpandedConsole_DismissDebounced_Patch
 	{
 		if (Main.MySettings.EnableConsolePatch)
 		{
-			return false; //skip original function
+			return Constants.SKIP_ORIGINAL;
 		}
 
 		return true;

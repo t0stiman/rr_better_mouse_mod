@@ -23,7 +23,7 @@ public class TrainInput_Update_Patch
 	{
 		Yes(ref __instance);
 
-		return false; //skip original function
+		return Constants.SKIP_ORIGINAL;
 	}
 
 	//i should really learn to transpile
