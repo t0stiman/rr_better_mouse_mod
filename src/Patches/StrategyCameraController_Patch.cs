@@ -48,7 +48,7 @@ public class StrategyCameraController_UpdateInput_Patch
     {
 	    //why don't they use GameInput for this?
 	    doPanning = Input.GetMouseButtonDown(Constants.LEFT_MOUSE_BUTTON) && !ObjectPicker.Shared.IsOverObject;
-      doLookEnable = GameInput.shared.LookEnableDown;
+	    doLookEnable = Input.GetMouseButtonDown(Constants.RIGHT_MOUSE_BUTTON);
     }
 
     if (GameInput.IsMouseOverGameWindow() && Math.Abs(Input.mouseScrollDelta.y) > 1.0 / 1000.0)
@@ -71,13 +71,9 @@ public class StrategyCameraController_UpdateInput_Patch
 
 		    if (__instance._rotateStarted)
 		    {
-			    __instance._rotateStartPosition = Input.mousePosition;
-			    if (Main.MySettings.DisableCameraSmoothing)
-			    {
-				    Cursor.lockState = CursorLockMode.Locked;
-			    }
+			    Cursor.lockState = CursorLockMode.Locked;
 		    }
-		    else if (Main.MySettings.DisableCameraSmoothing)
+		    else
 		    {
 			    Cursor.lockState = CursorLockMode.None;
 		    }
@@ -91,12 +87,12 @@ public class StrategyCameraController_UpdateInput_Patch
 
     if (__instance._rotateStarted && !Main.MySettings.ToggleModeEnabled && !Input.GetMouseButton(Constants.RIGHT_MOUSE_BUTTON))
     {
-		  __instance._rotateStarted = false;
+	    __instance._rotateStarted = false;
     }
 
     if (__instance._rotateStarted)
     {
-	    if (Main.MySettings.DisableCameraSmoothing)
+	    if (Main.MySettings.DisableCameraSmoothing || Main.MySettings.ToggleModeEnabled)
 	    {
 		    var lookInput = GameInput.shared.LookDelta;
 		    //y and x intentionally reversed
@@ -124,27 +120,27 @@ public class StrategyCameraController_UpdateInput_Patch
 	/// <param name="leftMouseButtonClicked"></param>
 	private static void HandlePanning(ref StrategyCameraController __instance, bool leftMouseButtonClicked)
 	{
-		bool holdingLeftMouse = Input.GetMouseButton(Constants.LEFT_MOUSE_BUTTON);
-		Vector3 point;
-
-		if (leftMouseButtonClicked && __instance.RayPointFromMouse(out point))
+		if (leftMouseButtonClicked && __instance.RayPointFromMouse(out var point1))
 		{
 			__instance._panStartCameraPosition = __instance.CameraContainer.position;
-			__instance._panStartPosition = point;
+			__instance._panStartPosition = point1;
 			__instance._panStartTarget = __instance._targetPosition;
-			__instance._panPlane = new Plane(Vector3.up, point);
-			__instance.FollowCar = null;
+			__instance._panPlane = new Plane(Vector3.up, point1);
 		}
-		else if (holdingLeftMouse && __instance._panStartPosition.HasValue)
+		else if (Input.GetMouseButton(Constants.LEFT_MOUSE_BUTTON) && __instance._panStartPosition.HasValue)
 		{
-			Vector3 vector3 = __instance.CameraContainer.position - __instance._panStartCameraPosition;
-			Ray mouseRay = __instance.GetMouseRay();
+			var vector3 = __instance.CameraContainer.position - __instance._panStartCameraPosition;
+			var mouseRay = __instance.GetMouseRay();
 			mouseRay.origin -= vector3;
 			float enter;
 			__instance._panPlane.Raycast(mouseRay, out enter);
-			__instance._moveToTarget = __instance.SnapToGround(
-				__instance._panStartTarget + (__instance._panStartPosition.Value - mouseRay.GetPoint(enter)));
+			var point2 = mouseRay.GetPoint(enter);
+			__instance._moveToTarget = __instance.SnapToGround(__instance._panStartTarget + (__instance._panStartPosition.Value - point2));
 			__instance._moveTimer = 0.0f;
+			if (Vector3.Distance(__instance._panStartPosition.Value, point2) > 1.0 && __instance.FollowCar != null)
+			{
+				__instance.FollowCar = null;
+			}
 		}
 		else
 		{
@@ -210,21 +206,25 @@ public class StrategyCameraController_UpdateInput_Patch
       
       __instance._extraRotationY = extraRotationY;
       
-      __instance._distanceVelocity = Mathf.Lerp(__instance._distanceVelocity, __instance._distanceInput, t);
-      __instance._distance += __instance._distanceVelocity * __instance.ZoomDelta * fixedDeltaTime;
-      __instance._distance = Mathf.Clamp(__instance._distance, 1f, 500f);
-      
       // ============== changed: ==============
+      
+      __instance._distanceVelocity = Mathf.Lerp(__instance._distanceVelocity, __instance._distanceInput, t);
+      // __instance._angleXVelocity = Mathf.Lerp(__instance._angleXVelocity, __instance._angleXInput, t);
+      // __instance._angleYVelocity = Mathf.Lerp(__instance._angleYVelocity, __instance._angleYInput, t);
+      __instance._distance += __instance._distanceVelocity * __instance.ZoomDelta * fixedDeltaTime;
       
       __instance._angleY += __instance._angleYInput * Preferences.MouseLookSpeed;
       __instance._angleX += __instance._angleXInput * Preferences.MouseLookSpeed;
       
       // ============== end of changed code ==============
       
+      __instance._distance = Mathf.Clamp(__instance._distance, 1f, 500f);
       __instance._angleX = Mathf.Clamp(__instance._angleX, -30f, 90f);
-      
-      __instance.ClampPitchToGround(__instance.transform.position, 1f);
       __instance.UpdatePosition(immediate);
+      if (__instance.ClampPitchToGround(__instance.transform.position, 1f))
+      {
+	      __instance.UpdatePosition(immediate);
+      }
       
       return Constants.SKIP_ORIGINAL;
 		}
@@ -246,7 +246,7 @@ public class StrategyCameraController_UpdatePosition_Patch
 		}
 		
 		var rotation = Quaternion.Euler(__instance._angleX, __instance._angleY + __instance._extraRotationY, 0.0f);
-		Vector3 position = __instance._targetPosition + rotation * (Vector3.back * __instance._distance);
+		var position = __instance._targetPosition + rotation * (Vector3.back * __instance._distance);
 		
 		var transform = __instance.transform;
 		transform.position = position;
