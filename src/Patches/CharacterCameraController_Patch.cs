@@ -12,20 +12,21 @@ namespace better_mouse_mod.Patches;
 [HarmonyPatch(nameof(CharacterCameraController.UpdateWithInput))]
 public class CharacterCameraController_UpdateWithInput_Patch
 {
-	private static bool Prefix(ref CharacterCameraController __instance, Lean lean)
+	private static bool Prefix(ref CharacterCameraController __instance)
 	{
 		if (!Main.MySettings.DisableCameraSmoothing)
 		{
-			return true; //execute original function
+			return Constants.EXECUTE_ORIGINAL;
 		}
-
+		
 		if (!PlayerController._mouseMovesCamera)
 		{
 			return false;
 		}
-
-		// X and Y multiplier should be the same
-		var lookDelta = GameInput.shared.LookDelta * CameraSelector.shared.character.CameraXMultiplier;
+		
+		var lookDelta = GameInput.shared.LookDelta;
+		lookDelta.x *= CameraSelector.shared.character.CameraXMultiplier;
+		lookDelta.y *= CameraSelector.shared.character.CameraYMultiplier;
 		
 		//vertical
 		__instance._targetPitch -= lookDelta.y * __instance.rotationSpeed;
@@ -34,8 +35,8 @@ public class CharacterCameraController_UpdateWithInput_Patch
 		__instance._targetYaw += lookDelta.x * __instance.rotationSpeed;
 		
 		//rotate the camera
-		__instance._transform.eulerAngles = new Vector3(__instance._targetPitch, __instance._targetYaw, 0);
+		__instance._transform.localEulerAngles = new Vector3(__instance._targetPitch, __instance._targetYaw, 0);
 		
-		return false; //skip original function
+		return Constants.SKIP_ORIGINAL;
 	}
 }
