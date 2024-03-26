@@ -50,7 +50,7 @@ public static class CharacterController_AfterCharacterUpdate_Patch
   private static Lean previousLean = (Lean)99;
   private static Vector3 localGoal = Vector3.zero;
   
-  //todo test ladders
+
   private static bool Prefix(ref CharacterController __instance, float deltaTime)
   {
     if (!Main.MySettings.DisableCameraSmoothing)
@@ -135,7 +135,8 @@ public static class CharacterController_AfterCharacterUpdate_Patch
           break;
       }
       
-      localGoal = cameraOffset * camera.right;
+      var cameraController = CameraSelector.shared.character.cameraController;
+      localGoal = Quaternion.Euler(0f, Stuff.CPPModulo(cameraController._targetYaw, 360), 0f) * new Vector3(cameraOffset, 0, 0);
       
       previousLean = __instance.Lean;
     }

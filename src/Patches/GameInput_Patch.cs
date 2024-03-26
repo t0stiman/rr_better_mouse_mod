@@ -56,16 +56,11 @@ public class GameInput_Update_Patch
 				Main.Error("Can't find selected locomotive in list");
 			}
 			
-			newSelectionIndex = CPPModulo(selectedIndex + delta, locomotives.Count);
+			newSelectionIndex = Stuff.CPPModulo(selectedIndex + delta, locomotives.Count);
 		}
 		
 		TrainController.Shared.SelectedCar = locomotives[newSelectionIndex];
 		CameraSelector.shared.JumpToCar(TrainController.Shared.SelectedCar);
-	}
-	
-	private static int CPPModulo(float a,float b)
-	{
-		return Mathf.RoundToInt(a - b * Mathf.Floor(a / b));
 	}
 
 	/// <summary>
