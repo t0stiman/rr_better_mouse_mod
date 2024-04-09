@@ -3,12 +3,10 @@ using better_mouse_mod.Extensions;
 using Game.Messages;
 using Game.State;
 using HarmonyLib;
-using Model;
-using RollingStock;
+using Model.Definition;
 using RollingStock.Controls;
 using UI;
 using UnityEngine;
-using Model.Definition;
 
 namespace better_mouse_mod.Patches;
 
@@ -106,19 +104,19 @@ public class TrainInput_Update_Patch
 			num6 = (float) (-(double) throttleStepSize * 2.0);
 		else if (gameInput.LocomotiveBrakeApply)
 			num6 = throttleStepSize;
-		if ((double) reverserDelta != 0.0)
+		if (reverserDelta != 0.0)
 			__instance.ChangeValue(PropertyChange.Control.Reverser, Mathf.Clamp(adapter.AbstractReverser + reverserDelta, -1f, 1f));
-		if ((double) __instance._locomotiveBrakeDelta < 0.0 && (double) adapter.LocomotiveBrakeSetting < 0.0 && (double) num6 == 0.0)
+		if (__instance._locomotiveBrakeDelta < 0.0 && adapter.LocomotiveBrakeSetting < 0.0 && num6 == 0.0)
 			__instance.ChangeValue(PropertyChange.Control.LocomotiveBrake, 0.0f);
 		__instance._locomotiveBrakeDelta = num6;
 		__instance._trainBrakeDelta = num5;
 		__instance._throttleDelta = throttleDelta;
 		if (gameInput.Bell)
-			StateManager.ApplyLocal((IGameMessage) new PropertyChange(loco.id, PropertyChange.Control.Bell, !loco.locomotiveControl.Bell));
+			StateManager.ApplyLocal(new PropertyChange(loco.id, PropertyChange.Control.Bell, !loco.locomotiveControl.Bell));
 		if (gameInput.CylinderCock)
 		{
 			var boolValue = loco.KeyValueObject[PropertyChange.KeyForControl(PropertyChange.Control.CylinderCock)].BoolValue;
-			StateManager.ApplyLocal((IGameMessage) new PropertyChange(loco.id, PropertyChange.Control.CylinderCock, !boolValue));
+			StateManager.ApplyLocal(new PropertyChange(loco.id, PropertyChange.Control.CylinderCock, !boolValue));
 		}
 		var num9 = gameInput.InputHorn;
 		if (gameInput.HornExpressionEnabledThisFrame)
@@ -128,9 +126,9 @@ public class TrainInput_Update_Patch
 			__instance._hornDownMousePosition += gameInput.HornExpressionValue;
 			num9 = Mathf.Clamp01((float) (-(double) __instance._hornDownMousePosition / 200.0));
 		}
-		if ((double) Math.Abs(num9 - __instance._hornWas) > 0.0099999997764825821)
+		if (Math.Abs(num9 - __instance._hornWas) > 0.0099999997764825821)
 		{
-			StateManager.ApplyLocal((IGameMessage) new PropertyChange(loco.id, PropertyChange.Control.Horn, num9));
+			StateManager.ApplyLocal(new PropertyChange(loco.id, PropertyChange.Control.Horn, num9));
 			__instance._hornWas = num9;
 		}
 		var inputHeadlight = gameInput.InputHeadlight;
