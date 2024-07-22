@@ -27,7 +27,7 @@ public class MouseLookInput_UpdateInput_Patch
 		if (selected)
 		{
 			var shared = GameInput.shared;
-			
+
 			if (MouseLookInput.ToggleMouseLook)
 			{
 				if (shared.MouseLookToggle)
@@ -60,7 +60,7 @@ public class MouseLookInput_UpdateInput_Patch
 			__instance.Pitch = 0.0f;
 			__instance.Yaw = 0.0f;
 		}
-		
+
 		return Constants.SKIP_ORIGINAL;
 	}
 }

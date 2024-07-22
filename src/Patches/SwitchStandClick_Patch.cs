@@ -17,14 +17,14 @@ public class SwitchStandClick_MaxPickDistance_Patch
 		{
 			return;
 		}
-		
+
 		var firstPersonCamera = Camera.main;
 		if (firstPersonCamera is null)
 		{
 			Main.Error($"{nameof(SwitchStandClick_MaxPickDistance_Patch)}: {nameof(firstPersonCamera)} is null");
 			return;
 		}
-		
+
 		var zoom = Preferences.DefaultFOV / firstPersonCamera.fieldOfView;
 		if (zoom > 1)
 		{

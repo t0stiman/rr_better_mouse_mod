@@ -24,28 +24,29 @@ public class CharacterCameraController_UpdateWithInput_Patch
 		{
 			return Constants.EXECUTE_ORIGINAL;
 		}
-		
+
 		if (!CameraSelector.shared.character._mouseLookInput._mouseMovesCamera)
 		{
 			return Constants.SKIP_ORIGINAL;
 		}
-		
+
 		var lookDelta = GameInput.shared.LookDelta;
-		
+
 		lookDelta.x *= MouseLookInput.CameraXMultiplier;
 		lookDelta.y *= MouseLookInput.CameraYMultiplier;
-		
+
 		//vertical
 		__instance._targetPitch -= lookDelta.y * __instance.rotationSpeed;
-		__instance._targetPitch = Mathf.Clamp(__instance._targetPitch, __instance.minVerticalAngle, __instance.maxVerticalAngle);
+		__instance._targetPitch =
+			Mathf.Clamp(__instance._targetPitch, __instance.minVerticalAngle, __instance.maxVerticalAngle);
 		//horizontal
 		__instance._targetYaw += lookDelta.x * __instance.rotationSpeed;
-		
+
 		//rotate the camera
 		__instance._transform.localEulerAngles = new Vector3(__instance._targetPitch, __instance._targetYaw, 0);
-		
+
 		__instance.UpdateZoom(inputZoom, inputResetZoom);
-		
+
 		return Constants.SKIP_ORIGINAL;
 	}
 }

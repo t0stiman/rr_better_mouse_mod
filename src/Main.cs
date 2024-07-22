@@ -22,7 +22,7 @@ static class Main
 			myModEntry = modEntry;
 			MySettings = UnityModManager.ModSettings.Load<Settings>(modEntry);
 			MySettings.Setup();
-			
+
 			modEntry.OnGUI = entry => MySettings.Draw(entry);
 			modEntry.OnSaveGUI = entry => MySettings.Save(entry);
 			modEntry.OnToggle = OnToggle;
@@ -37,7 +37,7 @@ static class Main
 			myHarmony?.UnpatchAll(myModEntry.Info.Id);
 			return false;
 		}
-		
+
 		modEntry.Logger.Log("loaded");
 
 		return true;
@@ -49,7 +49,7 @@ static class Main
 		return true;
 	}
 
-	private static bool OnToggle(UnityModManager.ModEntry modEntry, bool value) 
+	private static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
 	{
 		enabled = value;
 		string msg = enabled ? "hello!" : "goodbye!";
@@ -65,20 +65,22 @@ static class Main
 		{
 			return;
 		}
-		
+
 		if (MySettings.LogToConsole)
 		{
 			Console.Log($"{myModEntry.Info.Id}[DEBUG]{message}");
 		}
+
 		myModEntry.Logger.Log(message);
 	}
-	
+
 	public static void Info(string message)
 	{
 		if (MySettings.LogToConsole)
 		{
 			Console.Log($"{myModEntry.Info.Id}[INFO]{message}");
 		}
+
 		myModEntry.Logger.Log(message);
 	}
 
@@ -88,6 +90,7 @@ static class Main
 		{
 			Console.Log($"{myModEntry.Info.Id}[WARNING]{message}");
 		}
+
 		myModEntry.Logger.Warning(message);
 	}
 
@@ -97,6 +100,7 @@ static class Main
 		{
 			Console.Log($"{myModEntry.Info.Id}[ERROR]{message}");
 		}
+
 		myModEntry.Logger.Error(message);
 	}
 }

@@ -5,7 +5,6 @@ using better_mouse_mod.Extensions;
 
 namespace better_mouse_mod.Patches;
 
-
 [HarmonyPatch(typeof(GameInput))]
 [HarmonyPatch(nameof(GameInput.Update))]
 public class GameInput_Update_Patch

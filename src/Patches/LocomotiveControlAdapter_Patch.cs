@@ -19,7 +19,7 @@ public class SteamLocomotiveControl_ThrottleNotches_Patch
 		{
 			return Constants.EXECUTE_ORIGINAL;
 		}
-		
+
 		__result = Main.MySettings.ThrottleNotchCount_Steam;
 		return Constants.SKIP_ORIGINAL;
 	}

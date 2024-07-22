@@ -34,7 +34,7 @@ public class PlayerController_HandleCharacterInput_Patch
 		{
 			return Constants.EXECUTE_ORIGINAL;
 		}
-		
+
 		var inputs = new PlayerCharacterInputs();
 		if (__instance._isSelected)
 		{
@@ -58,7 +58,7 @@ public class PlayerController_HandleCharacterInput_Patch
 			inputs.Lean = lean;
 			inputs.Run = shared.ModifierRun;
 		}
-		
+
 		var num = __instance._characterInputs.Lean == Lean.Off ? 0 : (inputs.Lean == Lean.Off ? 1 : 0);
 		__instance._characterInputs = inputs;
 		// if (num != 0)

@@ -14,12 +14,12 @@ public class TrainController_Patch
 		{
 			return;
 		}
-		
+
 		if (!value.IsLocomotive)
 		{
 			return;
 		}
-		
+
 		CameraSelector.shared.JumpToSeatWithoutCameraChange();
 	}
 }

@@ -8,13 +8,13 @@ public static class CameraSelector_Extensions
 	public static void JumpToSeatWithoutCameraChange(this CameraSelector deez)
 	{
 		var selectedCar = TrainController.Shared.SelectedCar;
-		
+
 		if (selectedCar == null)
 		{
 			Main.Error($"{nameof(JumpToSeatWithoutCameraChange)}: No selected car.");
 			return;
 		}
-		
+
 		var bestSeat = deez.FindBestSeat(selectedCar, deez.character.character.Seat);
 		if (bestSeat == null) // no unoccupied seats
 		{
