@@ -94,9 +94,7 @@
     <Reference Include="UnityEngine.TilemapModule" />
     <Reference Include="UnityEngine.UI" />
     <Reference Include="UnityEngine.UIElementsModule" />
-    <Reference Include="UnityEngine.UIElementsNativeModule" />
     <Reference Include="UnityEngine.UIModule" />
-    <Reference Include="UnityEngine.UNETModule" />
     <Reference Include="UnityEngine.UmbraModule" />
     <Reference Include="UnityEngine.UnityAnalyticsCommonModule" />
     <Reference Include="UnityEngine.UnityAnalyticsModule" />
