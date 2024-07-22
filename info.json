@@ -1,10 +1,10 @@
 {
 	"Id": "better_mouse_mod",
-	"Version": "0.0.8",
+	"Version": "0.0.9",
 	"DisplayName": "Better controls mod",
 	"Author": "Tostiman",
 	"EntryMethod": "better_mouse_mod.Main.Load",
 	"AssemblyName": "better_mouse_mod.dll",
-	"HomePage": "https://github.com/t0stiman/rr_better_mouse_mod",
+	"HomePage": "https://nexusmods.com/railroader/mods/10",
 	"Repository": "https://raw.githubusercontent.com/t0stiman/rr_better_mouse_mod/master/repository.json"
 }
