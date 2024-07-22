@@ -3,6 +3,7 @@ using Cameras;
 using Game;
 using HarmonyLib;
 using Helpers;
+using Model;
 using UI;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ public class StrategyCameraController_UpdateInput_Patch
     __instance._angleYInput = 0.0f;
     
     // WASD and QE
-    Vector3 movement = GameInput.shared.GetMovement(__instance.normalSpeed, __instance.fastSpeed, __instance.fasterSpeed);
+    var movement = GameInput.shared.GetMovement(__instance.normalSpeed, __instance.fastSpeed, __instance.fasterSpeed);
     __instance._movementInput = new Vector3(movement.x, 0.0f, movement.z);
     
     // ======= this is changed: ======
@@ -42,11 +43,10 @@ public class StrategyCameraController_UpdateInput_Patch
 
     // ======= this is unchanged: ======
     
-    bool doPanning = false;
-    bool doLookEnable = false;
-    if (!GameInput.IsMouseOverUI(out TooltipInfo _, out string _))
+    var doPanning = false;
+    var doLookEnable = false;
+    if (!GameInput.IsMouseOverUI(out _, out _))
     {
-	    //why don't they use GameInput for this?
 	    doPanning = Input.GetMouseButtonDown(Constants.LEFT_MOUSE_BUTTON) && !ObjectPicker.Shared.IsOverObject;
 	    doLookEnable = Input.GetMouseButtonDown(Constants.RIGHT_MOUSE_BUTTON);
     }
@@ -65,7 +65,7 @@ public class StrategyCameraController_UpdateInput_Patch
     
     if (doLookEnable)
     {
-	    if (Main.MySettings.ToggleModeEnabled)
+	    if (Main.MySettings.ThirdPersonToggleMode)
 	    {
 		    __instance._rotateStarted = !__instance._rotateStarted;
 
@@ -85,14 +85,14 @@ public class StrategyCameraController_UpdateInput_Patch
 	    }
     }
 
-    if (__instance._rotateStarted && !Main.MySettings.ToggleModeEnabled && !Input.GetMouseButton(Constants.RIGHT_MOUSE_BUTTON))
+    if (__instance._rotateStarted && !Main.MySettings.ThirdPersonToggleMode && !Input.GetMouseButton(Constants.RIGHT_MOUSE_BUTTON))
     {
 	    __instance._rotateStarted = false;
     }
 
     if (__instance._rotateStarted)
     {
-	    if (Main.MySettings.DisableCameraSmoothing || Main.MySettings.ToggleModeEnabled)
+	    if (Main.MySettings.DisableCameraSmoothing || Main.MySettings.ThirdPersonToggleMode)
 	    {
 		    var lookInput = GameInput.shared.LookDelta;
 		    //y and x intentionally reversed
@@ -161,14 +161,14 @@ public class StrategyCameraController_UpdateInput_Patch
 			
 			// ============== unchanged: ==============
 			
-			float fixedDeltaTime = Time.fixedDeltaTime;
-      bool followingCar = __instance.FollowCar != null;
+			var fixedDeltaTime = Time.fixedDeltaTime;
+      var followingCar = __instance.FollowCar != null;
       
-      __instance._targetHeight = Mathf.Lerp(__instance._targetHeight, followingCar ? __instance.targetHeightFollow : __instance.targetHeightFree, fixedDeltaTime * 5f);
+      __instance._targetHeight = __instance.targetHeightFree;
       
       var vector3_1 = __instance.distanceToSpeed.Evaluate(__instance._distance) * fixedDeltaTime * __instance._movementInput;
       
-      float t = fixedDeltaTime * 5f;
+      var t = fixedDeltaTime * 5f;
       vector3_1.y = 0.0f;
       __instance._movementVelocity = Vector3.Lerp(__instance._movementVelocity, __instance.transform.rotation.OnlyEulerY() * vector3_1, t);
       __instance._targetPosition += 50f * fixedDeltaTime * __instance._movementVelocity;
@@ -177,33 +177,33 @@ public class StrategyCameraController_UpdateInput_Patch
       {
 	      __instance._moveToTarget = new Vector3?();
       }
-
+      
       if (__instance._moveToTarget.HasValue)
       {
-        __instance._moveTimer += fixedDeltaTime;
-        __instance._targetPosition = Vector3.Lerp(__instance._targetPosition, __instance._moveToTarget.Value, fixedDeltaTime * 10f);
-        if (__instance._moveTimer > 5.0)
-        {
-          __instance._targetPosition = __instance._moveToTarget.Value;
-          __instance._moveToTarget = new Vector3?();
-        }
+	      __instance._moveTimer += fixedDeltaTime;
+	      __instance._targetPosition = Vector3.Lerp(__instance._targetPosition, __instance._moveToTarget.Value, fixedDeltaTime * 10f);
+	      if (__instance._moveTimer > 5.0)
+	      {
+		      __instance._targetPosition = __instance._moveToTarget.Value;
+		      __instance._moveToTarget = new Vector3?();
+	      }
       }
       
-      float extraRotationY = 0.0f;
+      var extraRotationY = 0.0f;
       if (__instance._movementVelocity.magnitude > 1.0 / 1000.0)
       {
-        __instance._targetPosition = __instance.SnapToGround(__instance._targetPosition);
-        __instance.FollowCar = null;
+	      __instance._targetPosition = __instance.SnapToGround(__instance._targetPosition);
+	      __instance.FollowCar = null;
       }
       else if (followingCar)
       {
-        var vector3_2 = __instance._targetHeight * Vector3.up;
-        (Vector3 position, Quaternion rotation) = __instance.FollowCar.GetMoverTargetPositionRotation();
-        __instance._targetPosition = position + vector3_2;
-        Quaternion quaternion = Quaternion.Inverse(__instance._followCarInitialRotation);
-        extraRotationY = (rotation * quaternion).eulerAngles.y;
+	      var vector3_2 = __instance._targetHeight * Vector3.up;
+	      (var position, var rotation) = __instance.FollowCar.GetMoverTargetPositionRotation();
+	      __instance._targetPosition = position + vector3_2;
+	      var quaternion = Quaternion.Inverse(__instance._followCarInitialRotation);
+	      var y = (rotation * quaternion).eulerAngles.y;
+	      extraRotationY = Mathf.Abs(y - __instance._extraRotationY) < 10.0 ? Mathf.Lerp(__instance._extraRotationY, y, t) : y;
       }
-      
       __instance._extraRotationY = extraRotationY;
       
       // ============== changed: ==============

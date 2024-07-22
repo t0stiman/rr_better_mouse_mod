@@ -14,6 +14,6 @@ public class ExpandedConsole_DismissDebounced_Patch
 			return Constants.SKIP_ORIGINAL;
 		}
 
-		return true;
+		return Constants.EXECUTE_ORIGINAL;
 	}
 }

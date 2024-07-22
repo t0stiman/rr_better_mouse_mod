@@ -64,11 +64,17 @@ public static class CharacterController_AfterCharacterUpdate_Patch
     {
       case CharacterState.Default:
         if (__instance._jumpRequested && __instance._timeSinceJumpRequested > (double) __instance.jumpPreGroundingGraceTime)
+        {
           __instance._jumpRequested = false;
+        }
+
         if ((__instance.allowJumpingWhenSliding ? (__instance.motor.GroundingStatus.FoundAnyGround ? 1 : 0) : (__instance.motor.GroundingStatus.IsStableOnGround ? 1 : 0)) != 0)
         {
           if (!__instance._jumpedThisFrame)
+          {
             __instance._jumpConsumed = false;
+          }
+
           __instance._timeSinceLastAbleToJump = 0.0f;
         }
         else
@@ -88,7 +94,7 @@ public static class CharacterController_AfterCharacterUpdate_Patch
         }
         break;
       case CharacterState.Seated:
-        bool flag = __instance._anchoringTimer >= 0.15000000596046448;
+        var flag = __instance._anchoringTimer >= 0.15000000596046448;
         switch (__instance._attachState)
         {
           case CharacterController.AttachState.Anchoring:
@@ -170,10 +176,13 @@ public static class CharacterController_SetInputs_Patch
     // ========================== unchanged code: ==========================
     
     var vector3_1 = Vector3.ClampMagnitude(new Vector3(inputs.MoveAxisRight, 0.0f, inputs.MoveAxisForward), 1f);
-    Quaternion cameraRotation = inputs.CameraRotation;
+    var cameraRotation = inputs.CameraRotation;
     var normalized = Vector3.ProjectOnPlane(cameraRotation * Vector3.forward, __instance.motor.CharacterUp).normalized;
     if (normalized.sqrMagnitude == 0.0)
+    {
       normalized = Vector3.ProjectOnPlane(cameraRotation * Vector3.up, __instance.motor.CharacterUp).normalized;
+    }
+
     __instance._moveInputVector = Quaternion.LookRotation(normalized, __instance.motor.CharacterUp) * vector3_1;
     __instance._lookInputRotation = Quaternion.Euler(0.0f, inputs.RotateAxisY, 0.0f);
     if (inputs.JumpDown)
@@ -194,29 +203,44 @@ public static class CharacterController_SetInputs_Patch
     {
       case CharacterState.Default:
         if (__instance.CheckForLadderOrSeat())
+        {
           break;
-        if (inputs.CrouchDown) //TODO
+        }
+
+        if (inputs.CrouchDown) //TODO can we get a working crouch feature?
         {
           __instance._shouldBeCrouching = true;
           if (__instance._isCrouching)
+          {
             break;
+          }
+
           __instance._isCrouching = true;
           __instance.SetCrouched(true);
           break;
         }
         if (!inputs.CrouchUp)
+        {
           break;
+        }
+
         __instance._shouldBeCrouching = false;
         break;
       case CharacterState.Seated:
         if (__instance._attachState != CharacterController.AttachState.Stable || vector3_1.sqrMagnitude <= 1.0 / 1000.0 || __instance._seatStickyRemaining > 0.0)
+        {
           break;
+        }
+
         __instance._attachState = CharacterController.AttachState.Deanchoring;
         __instance._anchoringTimer = 0.0f;
         break;
       case CharacterState.Ladder:
         if (__instance._moveInputVector.sqrMagnitude < 0.10000000149011612)
+        {
           break;
+        }
+
         if (__instance.IsMovingInto(__instance._ladder.CapsuleCollider, __instance._moveInputVector, true))
         {
           var x = (double) __instance.cameraContainer.transform.localRotation.eulerAngles.x;
@@ -225,7 +249,10 @@ public static class CharacterController_SetInputs_Patch
           {
             __instance._ladderLocalPosition += vector3_2;
             if (__instance._ladder.CheckPositionValid(__instance._ladderLocalPosition, true))
+            {
               break;
+            }
+
             __instance.TransitionToState(CharacterState.Default);
             
             // ========================== changed code: ==========================
@@ -237,12 +264,18 @@ public static class CharacterController_SetInputs_Patch
           }
           __instance._ladderLocalPosition -= vector3_2;
           if (__instance._ladder.CheckPositionValid(__instance._ladderLocalPosition, false))
+          {
             break;
+          }
+
           __instance.TransitionToState(CharacterState.Default);
           break;
         }
         if (__instance.LadderStickyRemaining > 0.0)
+        {
           break;
+        }
+
         __instance.TransitionToState(CharacterState.Default);
         break;
     }

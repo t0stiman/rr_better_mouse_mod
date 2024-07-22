@@ -6,6 +6,7 @@ using HarmonyLib;
 using Model.Definition;
 using RollingStock.Controls;
 using UI;
+using UI.Common;
 using UnityEngine;
 
 namespace better_mouse_mod.Patches;
@@ -35,7 +36,7 @@ public class TrainInput_Update_Patch
 		var gameInput = GameInput.shared;
 		var isControlDown = GameInput.IsControlDown;
 		
-		//todo step size instead of repeat
+		//todo verander de grootte van een stap ipv verkleinen van de herhaaltijd?
 		
 		var reverserDelta = 0.0f;
 		var throttleDelta = 0.0f;
@@ -44,6 +45,11 @@ public class TrainInput_Update_Patch
 
 		var useBigStep = loco.Archetype == CarArchetype.LocomotiveDiesel | isControlDown;
 		var reverserStepSize = useBigStep ? 1f : 0.1f;
+		// var reverserStepSize = Main.MySettings.ReverserStepSize;
+		if (useBigStep)
+		{
+			reverserStepSize *= 10;
+		}
 
 		var reverserRepeatInterval = Main.MySettings.Notched_RepeatInterval;
 		
@@ -97,27 +103,41 @@ public class TrainInput_Update_Patch
 		// train brakes are handled in GameInput_Patch.cs
 		
 		if (gameInput.TrainBrakeRelease)
+		{
 			num5 = (float) (-(double) throttleStepSize * 2.0);
+		}
 		else if (gameInput.TrainBrakeApply)
+		{
 			num5 = throttleStepSize;
+		}
+
 		if (gameInput.LocomotiveBrakeRelease)
+		{
 			num6 = (float) (-(double) throttleStepSize * 2.0);
+		}
 		else if (gameInput.LocomotiveBrakeApply)
+		{
 			num6 = throttleStepSize;
+		}
+            
 		if (reverserDelta != 0.0)
+		{
 			__instance.ChangeValue(PropertyChange.Control.Reverser, Mathf.Clamp(adapter.AbstractReverser + reverserDelta, -1f, 1f));
+		}
+
 		if (__instance._locomotiveBrakeDelta < 0.0 && adapter.LocomotiveBrakeSetting < 0.0 && num6 == 0.0)
+		{
 			__instance.ChangeValue(PropertyChange.Control.LocomotiveBrake, 0.0f);
+		}
+
 		__instance._locomotiveBrakeDelta = num6;
 		__instance._trainBrakeDelta = num5;
 		__instance._throttleDelta = throttleDelta;
+		
 		if (gameInput.Bell)
 			StateManager.ApplyLocal(new PropertyChange(loco.id, PropertyChange.Control.Bell, !loco.locomotiveControl.Bell));
 		if (gameInput.CylinderCock)
-		{
-			var boolValue = loco.KeyValueObject[PropertyChange.KeyForControl(PropertyChange.Control.CylinderCock)].BoolValue;
-			StateManager.ApplyLocal(new PropertyChange(loco.id, PropertyChange.Control.CylinderCock, !boolValue));
-		}
+			loco.ControlProperties[PropertyChange.Control.CylinderCock] = !loco.ControlProperties[PropertyChange.Control.CylinderCock];
 		var num9 = gameInput.InputHorn;
 		if (gameInput.HornExpressionEnabledThisFrame)
 			__instance._hornDownMousePosition = gameInput.HornExpressionValue;
@@ -134,6 +154,6 @@ public class TrainInput_Update_Patch
 		var inputHeadlight = gameInput.InputHeadlight;
 		if (inputHeadlight == 0)
 			return;
-		Console.Log("Headlight: " + HeadlightToggleLogic.TextForState(HeadlightToggleLogic.SetHeadlightStateOffset(loco.KeyValueObject, inputHeadlight)));
+		Toast.Present("Headlight: " + HeadlightToggleLogic.TextForState(HeadlightToggleLogic.SetHeadlightStateOffset(loco.KeyValueObject, inputHeadlight)), ToastPosition.Bottom);
 	}
 }

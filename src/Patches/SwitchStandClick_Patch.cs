@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using Game;
+using HarmonyLib;
 using UnityEngine;
 
 namespace better_mouse_mod.Patches;
@@ -24,7 +25,7 @@ public class SwitchStandClick_MaxPickDistance_Patch
 			return;
 		}
 		
-		var zoom = CameraSelector.DefaultFOV / firstPersonCamera.fieldOfView;
+		var zoom = Preferences.DefaultFOV / firstPersonCamera.fieldOfView;
 		if (zoom > 1)
 		{
 			__result *= zoom;

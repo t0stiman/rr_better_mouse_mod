@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using HarmonyLib;
+﻿using HarmonyLib;
 using UI;
 using UnityEngine;
 using better_mouse_mod.Extensions;
@@ -14,69 +12,64 @@ public class GameInput_Update_Patch
 {
 	private static void Postfix()
 	{
-		SwitchButtonStuff();
+		// TODO
+		// SwitchButtonStuff();
 		PauseStuff();
 	}
 
 	/// <summary>
 	/// Cycle through your locomotives with the page up / page down keys
 	/// </summary>
-	private static void SwitchButtonStuff()
-	{
-		if (!Main.MySettings.SwitchCarsWithButton)
-		{
-			return;
-		}
-
-		var delta = Convert.ToInt32(Input.GetKeyDown(KeyCode.PageUp)) - 
-		            Convert.ToInt32(Input.GetKeyDown(KeyCode.PageDown));
-		if (delta == 0)
-		{
-			return;
-		}
-		
-		var locomotives = TrainController.Shared.Cars.Where(car => car.IsLocomotive).ToList();
-		if (locomotives.Count == 0)
-		{
-			return;
-		}
-		
-		var selectedLocomotive = TrainController.Shared.SelectedLocomotive;
-
-		int newSelectionIndex;
-		if (selectedLocomotive == null) // no locomotive selected
-		{
-			newSelectionIndex = 0;
-		}
-		else
-		{
-			var selectedIndex = locomotives.IndexOf(selectedLocomotive);
-			if (selectedIndex == -1)
-			{
-				Main.Error("Can't find selected locomotive in list");
-			}
-			
-			newSelectionIndex = Stuff.CPPModulo(selectedIndex + delta, locomotives.Count);
-		}
-		
-		TrainController.Shared.SelectedCar = locomotives[newSelectionIndex];
-		CameraSelector.shared.JumpToCar(TrainController.Shared.SelectedCar);
-	}
+	// private static void SwitchButtonStuff()
+	// {
+	// 	if (!Main.MySettings.SwitchCarsWithButton)
+	// 	{
+	// 		return;
+	// 	}
+	//
+	// 	var delta = Convert.ToInt32(Input.GetKeyDown(KeyCode.PageUp)) - 
+	// 	               Convert.ToInt32(Input.GetKeyDown(KeyCode.PageDown));
+	// 	if (delta == 0)
+	// 	{
+	// 		return;
+	// 	}
+	// 	
+	// 	var locomotives = TrainController.Shared.Cars.Where(car => car.IsLocomotive).ToList();
+	// 	if (locomotives.Count == 0)
+	// 	{
+	// 		return;
+	// 	}
+	// 	
+	// 	var selectedLocomotive = TrainController.Shared.SelectedLocomotive;
+	//
+	// 	int newSelectionIndex;
+	// 	if (selectedLocomotive == null) // no locomotive selected
+	// 	{
+	// 		newSelectionIndex = 0;
+	// 	}
+	// 	else
+	// 	{
+	// 		var selectedIndex = locomotives.IndexOf(selectedLocomotive);
+	// 		if (selectedIndex == -1)
+	// 		{
+	// 			Main.Error("Can't find selected locomotive in list");
+	// 		}
+	// 		
+	// 		newSelectionIndex = Stuff.CPPModulo(selectedIndex + delta, locomotives.Count);
+	// 	}
+	// 	
+	// 	TrainController.Shared.SelectedCar = locomotives[newSelectionIndex];
+	// 	CameraSelector.shared.JumpToCar(TrainController.Shared.SelectedCar);
+	// }
 
 	/// <summary>
-	/// Pause the game with the pause/break button, so you don't have to close all windows to do so.
+	/// Custom pause key
 	/// </summary>
 	private static void PauseStuff()
 	{
-		if (Main.MySettings.PauseWithKey && Input.GetKeyDown(Main.MySettings.PauseKeyCode))
+		if (Input.GetKeyDown(Main.MySettings.PauseKeyCode))
 		{
-			Func<bool> func;
-			if (GameInput._escapeHandlers.TryGetValue(GameInput.EscapeHandler.Pause, out func) && func())
-			{
-				return;
-			}
-			
-			Main.Error($"{nameof(GameInput_Update_Patch)}: Failed to pause");
+			PauseMenu_OnEnable_Patch.TogglePause();
 		}
 	}
 }
