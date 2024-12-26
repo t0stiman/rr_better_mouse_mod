@@ -14,7 +14,8 @@
     <!-- Railroader -->
     <Reference Include="Assembly-CSharp" />
     <Reference Include="Definition" />
-
+  	<Reference Include="LeanTween" />
+	  
     <!-- Unity -->
     <Reference Include="Unity.Analytics.DataPrivacy" />
     <Reference Include="Unity.Burst.Unsafe" />
@@ -147,3 +148,4 @@
   </Target>
 
 </Project>
+

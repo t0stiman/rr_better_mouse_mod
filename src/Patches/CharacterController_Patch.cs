@@ -43,133 +43,37 @@ public static class CharacterController_GetMotionSnapshot_Patch
 }
 
 /// <summary>
-/// IDFK why this patch is necessary but without it leaning doesn't work
+/// leaning
 /// </summary>
 [HarmonyPatch(typeof(CharacterController))]
-[HarmonyPatch(nameof(CharacterController.AfterCharacterUpdate))]
-public static class CharacterController_AfterCharacterUpdate_Patch
+[HarmonyPatch(nameof(CharacterController.TargetCameraContainerLocalPosition))]
+public static class CharacterController_TargetCameraContainerLocalPosition_Patch
 {
-	private static Lean previousLean = (Lean)99;
-	private static Vector3 localGoal = Vector3.zero;
-
-
-	private static bool Prefix(ref CharacterController __instance, float deltaTime)
+	private static bool Prefix(ref CharacterController __instance, ref Vector3 __result)
 	{
-		if (!Main.MySettings.DisableCameraSmoothing)
+		if (!Main.MySettings.DisableCameraSmoothing) return Constants.EXECUTE_ORIGINAL;
+		
+		float cameraOffset = 0.0f;
+		switch (__instance.Lean)
 		{
-			return Constants.EXECUTE_ORIGINAL;
-		}
-
-		// =============================================
-
-		switch (__instance.CurrentCharacterState)
-		{
-			case CharacterState.Default:
-				if (__instance._jumpRequested &&
-				    __instance._timeSinceJumpRequested > (double)__instance.jumpPreGroundingGraceTime)
-				{
-					__instance._jumpRequested = false;
-				}
-
-				if ((__instance.allowJumpingWhenSliding
-					    ? (__instance.motor.GroundingStatus.FoundAnyGround ? 1 : 0)
-					    : (__instance.motor.GroundingStatus.IsStableOnGround ? 1 : 0)) != 0)
-				{
-					if (!__instance._jumpedThisFrame)
-					{
-						__instance._jumpConsumed = false;
-					}
-
-					__instance._timeSinceLastAbleToJump = 0.0f;
-				}
-				else
-				{
-					__instance._timeSinceLastAbleToJump += deltaTime;
-				}
-
-				if (__instance._isCrouching && !__instance._shouldBeCrouching)
-				{
-					__instance.SetCrouched(false);
-					if (__instance.motor.CharacterOverlap(__instance.motor.TransientPosition, __instance.motor.TransientRotation,
-						    __instance._probedColliders, __instance.motor.CollidableLayers, QueryTriggerInteraction.Ignore) > 0)
-					{
-						__instance.SetCrouched(true);
-						break;
-					}
-
-					__instance._isCrouching = false;
-				}
-
+			case Lean.Left:
+				cameraOffset = -__instance.leanDistance;
 				break;
-			case CharacterState.Seated:
-				var flag = __instance._anchoringTimer >= 0.15000000596046448;
-				switch (__instance._attachState)
-				{
-					case CharacterController.AttachState.Anchoring:
-						if (flag)
-						{
-							__instance.motor.SetMovementCollisionsSolvingActivation(true);
-							__instance._attachState = CharacterController.AttachState.Stable;
-							break;
-						}
-
-						__instance._anchoringTimer += deltaTime;
-						__instance.SetCameraHeightParameter(__instance.AnchoringParameter);
-						break;
-					case CharacterController.AttachState.Deanchoring:
-						if (flag)
-						{
-							__instance.TransitionToState(CharacterState.Default);
-							break;
-						}
-
-						__instance._anchoringTimer += deltaTime;
-						__instance.SetCameraHeightParameter(1f - __instance.AnchoringParameter);
-						break;
-				}
-
-				__instance._seatStickyRemaining -= deltaTime;
-				break;
-			case CharacterState.Ladder:
-				__instance._ladderDuration += deltaTime;
+			case Lean.Right:
+				cameraOffset = __instance.leanDistance;
 				break;
 		}
-
-		// =============================================
-
-		var camera = __instance.cameraContainer;
-
-		if (previousLean != __instance.Lean)
-		{
-			var cameraOffset = 0.0f;
-			switch (__instance.Lean)
-			{
-				case Lean.Left:
-					cameraOffset = -0.5f;
-					break;
-				case Lean.Right:
-					cameraOffset = 0.5f;
-					break;
-			}
-
-			var cameraController = CameraSelector.shared.character.cameraController;
-			localGoal = Quaternion.Euler(0f, Stuff.CPPModulo(cameraController._targetYaw, 360), 0f) *
-			            new Vector3(cameraOffset, 0, 0);
-
-			previousLean = __instance.Lean;
-		}
-
-		var t = deltaTime * 10f;
-
-		camera.localPosition = new Vector3(
-			Mathf.Lerp(camera.localPosition.x, localGoal.x, t),
-			Mathf.Lerp(__instance.eyeHeightStanding, __instance.eyeHeightSeated, __instance._seatedParameter),
-			Mathf.Lerp(camera.localPosition.z, localGoal.z, t)
-		);
-
+		
+		var cameraController = CameraSelector.shared.character.cameraController;
+		var localGoal = Quaternion.Euler(0f, Stuff.CPPModulo(cameraController._targetYaw, 360), 0f) *
+		                new Vector3(cameraOffset, 0, 0);
+	
+		__result = new Vector3(localGoal.x, __instance._cameraSeated ? __instance.eyeHeightSeated : __instance.eyeHeightStanding, localGoal.z);
+		
 		return Constants.SKIP_ORIGINAL;
 	}
 }
+
 
 /// <summary>
 /// Make sure ladder exit bump is in the right direction
