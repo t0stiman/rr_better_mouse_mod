@@ -10,15 +10,7 @@ public class TrainController_Patch
 {
 	private static void Postfix(Car value)
 	{
-		if (!Main.MySettings.PlaceAvatarInChairOnSelectCar)
-		{
-			return;
-		}
-
-		if (!value.IsLocomotive)
-		{
-			return;
-		}
+		if (!Main.MySettings.PlaceAvatarInChairOnSelectCar || !value.IsLocomotive) { return; }
 
 		CameraSelector.shared.JumpToSeatWithoutCameraChange();
 	}
