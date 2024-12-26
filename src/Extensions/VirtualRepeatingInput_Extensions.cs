@@ -11,10 +11,7 @@ public static class VirtualRepeatingInput_Extensions
 	/// </summary>
 	public static bool ActiveThisFrame(this VirtualRepeatingInput instance, float repeatInterval)
 	{
-		if (!instance._pressed)
-		{
-			return false;
-		}
+		if (!instance._pressed) { return false; }
 
 		float unscaledTime = Time.unscaledTime;
 		if (Math.Abs(instance._downFrameTime - unscaledTime) < 1.0 / 1000.0)

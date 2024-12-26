@@ -42,17 +42,10 @@ public class TrainInput_Update_Patch
 		var throttleDelta = 0.0f;
 		var num5 = 0.0f;
 		var num6 = 0.0f;
-
-		var useBigStep = loco.Archetype == CarArchetype.LocomotiveDiesel | isControlDown;
-		var reverserStepSize = useBigStep ? 1f : 0.1f;
-		// var reverserStepSize = Main.MySettings.ReverserStepSize;
-		if (useBigStep)
-		{
-			reverserStepSize *= 10;
-		}
-
+		
+		var reverserStepSize = loco.Archetype == CarArchetype.LocomotiveDiesel | isControlDown ? 1f : 0.1f;
 		var reverserRepeatInterval = Main.MySettings.Notched_RepeatInterval;
-
+		
 		if (gameInput.GetReverserBack(reverserRepeatInterval))
 		{
 			reverserDelta = -reverserStepSize;

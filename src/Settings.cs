@@ -22,10 +22,6 @@ namespace better_mouse_mod
 		public int ThrottleNotchCount_Steam = 8;
 		private string ThrottleNotchCount_Steam_text = null;
 
-		// public bool ChangeThrottleNotchCount_Diesel = false;
-		// public int ThrottleNotchCount_Diesel = 8;
-		// private string ThrottleNotchCount_Diesel_text = null;
-
 		public float Notched_RepeatInterval = 0.10f;
 		private string Notched_RepeatInterval_text;
 
