@@ -122,10 +122,6 @@
     <Reference Include="KinematicCharacterController" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="package.ps1" />
-  </ItemGroup>
-
    <ItemGroup>
     <PackageReference Include="Krafs.Publicizer" Version="2.2.1">
       <PrivateAssets>all</PrivateAssets>
@@ -136,16 +132,6 @@
    <ItemGroup>
     <Publicize Include="Assembly-CSharp" />
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <!-- Copy to build folder -->
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="build/" />
-
-    <!-- Package after Release build -->
-    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="powershell -executionpolicy bypass .\package.ps1 -NoArchive -OutputDirectory 'D:\Programs\Railroader\Mods'" />
-    <!-- Linux -->
-    <Exec Condition="'$(OS)' != 'Windows_NT'" Command="pwsh -Command &quot;(package.ps1)&quot;" />
-  </Target>
 
 </Project>
 
