@@ -56,7 +56,7 @@ public class TrainInput_Update_Patch
 		}
 
 		var throttleStepSize = GameInput.IsShiftDown ? 0.05f : 0.01f;
-		var throttleNotches = adapter.ThrottleNotches;
+		var throttleNotches = adapter.ThrottleInputNotches;
 		if (throttleNotches > 0) //notched
 		{
 			var throttleChangeo = 0;

@@ -10,7 +10,7 @@ namespace better_mouse_mod.Patches;
 // Steam
 
 [HarmonyPatch(typeof(SteamLocomotiveControl))]
-[HarmonyPatch(nameof(SteamLocomotiveControl.ThrottleNotches), MethodType.Getter)]
+[HarmonyPatch(nameof(SteamLocomotiveControl.ThrottleInputNotches), MethodType.Getter)]
 public class SteamLocomotiveControl_ThrottleNotches_Patch
 {
 	private static bool Prefix(ref int __result)
