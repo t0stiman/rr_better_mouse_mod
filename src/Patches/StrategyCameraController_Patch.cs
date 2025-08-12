@@ -164,55 +164,41 @@ public class StrategyCameraController_UpdateInput_Patch
 			// ============== unchanged: ==============
 
 			var fixedDeltaTime = Time.fixedDeltaTime;
-			var followingCar = __instance.FollowCar != null;
-
+			var flag = __instance.FollowCar != null;
 			__instance._targetHeight = __instance.targetHeightFree;
-
-			var vector3_1 = __instance.distanceToSpeed.Evaluate(__instance._distance) * fixedDeltaTime *
-			                __instance._movementInput;
-
+			var vector3_1 = __instance.distanceToSpeed.Evaluate(__instance._distance) * fixedDeltaTime * __instance._movementInput;
 			var t = fixedDeltaTime * 5f;
 			vector3_1.y = 0.0f;
-			__instance._movementVelocity = Vector3.Lerp(__instance._movementVelocity,
-				__instance.transform.rotation.OnlyEulerY() * vector3_1, t);
+			__instance._movementVelocity = Vector3.Lerp(__instance._movementVelocity, __instance.transform.rotation.OnlyEulerY() * vector3_1, t);
 			__instance._targetPosition += 50f * fixedDeltaTime * __instance._movementVelocity;
-
 			if (__instance._movementVelocity.magnitude > 1.0 / 1000.0)
-			{
 				__instance._moveToTarget = new Vector3?();
-			}
-
 			if (__instance._moveToTarget.HasValue)
 			{
 				__instance._moveTimer += fixedDeltaTime;
-				__instance._targetPosition = Vector3.Lerp(__instance._targetPosition, __instance._moveToTarget.Value,
-					fixedDeltaTime * 10f);
+				__instance._targetPosition = Vector3.Lerp(__instance._targetPosition, __instance._moveToTarget.Value, fixedDeltaTime * 10f);
 				if (__instance._moveTimer > 5.0)
 				{
 					__instance._targetPosition = __instance._moveToTarget.Value;
 					__instance._moveToTarget = new Vector3?();
 				}
 			}
-
-			var extraRotationY = 0.0f;
+			var num = 0.0f;
 			if (__instance._movementVelocity.magnitude > 1.0 / 1000.0)
 			{
 				__instance._targetPosition = __instance.SnapToGround(__instance._targetPosition);
 				__instance.FollowCar = null;
 			}
-			else if (followingCar)
+			else if (flag)
 			{
 				var vector3_2 = __instance._targetHeight * Vector3.up;
 				(var position, var rotation) = __instance.FollowCar.GetMoverTargetPositionRotation();
 				__instance._targetPosition = position + vector3_2;
 				var quaternion = Quaternion.Inverse(__instance._followCarInitialRotation);
 				var y = (rotation * quaternion).eulerAngles.y;
-				extraRotationY = Mathf.Abs(y - __instance._extraRotationY) < 10.0
-					? Mathf.Lerp(__instance._extraRotationY, y, t)
-					: y;
+				num = Mathf.Abs(y - __instance._extraRotationY) < 10.0 ? Mathf.Lerp(__instance._extraRotationY, y, t) : y;
 			}
-
-			__instance._extraRotationY = extraRotationY;
+			__instance._extraRotationY = num;
 
 			// ============== changed: ==============
 
@@ -228,11 +214,9 @@ public class StrategyCameraController_UpdateInput_Patch
 
 			__instance._distance = Mathf.Clamp(__instance._distance, 1f, 500f);
 			__instance._angleX = Mathf.Clamp(__instance._angleX, -30f, 90f);
-			__instance.UpdatePosition(immediate);
-			if (__instance.ClampPitchToGround(__instance.transform.position, 1f))
-			{
-				__instance.UpdatePosition(immediate);
-			}
+			__instance.CalculatePositionRotation(out var position1, out var rotation1);
+			__instance.MoveAboveGround(ref position1, ref rotation1);
+			__instance.SetPositionRotation(position1, rotation1, immediate);
 
 			return Constants.SKIP_ORIGINAL;
 		}
