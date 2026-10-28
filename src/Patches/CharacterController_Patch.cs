@@ -2,21 +2,19 @@
 using HarmonyLib;
 using Model;
 using UnityEngine;
-using CharacterController = Character.CharacterController;
 
 namespace better_mouse_mod.Patches;
 
 /// <summary>
 /// Make the characters rotation match the 1st person camera
 /// </summary>
-[HarmonyPatch(typeof(CharacterController))]
-[HarmonyPatch(nameof(CharacterController.GetMotionSnapshot))]
-public static class CharacterController_GetMotionSnapshot_Patch
+[HarmonyPatch(typeof(PlayerCharacterController))]
+[HarmonyPatch(nameof(PlayerCharacterController.GetMotionSnapshot))]
+public static class PlayerCharacterController_GetMotionSnapshot_Patch
 {
-	//todo test ladders
-	private static bool Prefix(ref CharacterController __instance, ref MotionSnapshot __result)
+	private static bool Prefix(ref PlayerCharacterController __instance, ref MotionSnapshot __result)
 	{
-		if (!Main.MySettings.DisableCameraSmoothing)
+		if (!ModEntryPoint.MySettings!.DisableCameraSmoothing)
 		{
 			return Constants.EXECUTE_ORIGINAL;
 		}
@@ -45,13 +43,13 @@ public static class CharacterController_GetMotionSnapshot_Patch
 /// <summary>
 /// leaning
 /// </summary>
-[HarmonyPatch(typeof(CharacterController))]
-[HarmonyPatch(nameof(CharacterController.TargetCameraContainerLocalPosition))]
-public static class CharacterController_TargetCameraContainerLocalPosition_Patch
+[HarmonyPatch(typeof(PlayerCharacterController))]
+[HarmonyPatch(nameof(PlayerCharacterController.TargetCameraContainerLocalPosition))]
+public static class PlayerCharacterController_TargetCameraContainerLocalPosition_Patch
 {
-	private static bool Prefix(ref CharacterController __instance, ref Vector3 __result)
+	private static bool Prefix(ref PlayerCharacterController __instance, ref Vector3 __result)
 	{
-		if (!Main.MySettings.DisableCameraSmoothing) return Constants.EXECUTE_ORIGINAL;
+		if (!ModEntryPoint.MySettings!.DisableCameraSmoothing) return Constants.EXECUTE_ORIGINAL;
 		
 		float cameraOffset = 0.0f;
 		switch (__instance.Lean)
@@ -78,13 +76,13 @@ public static class CharacterController_TargetCameraContainerLocalPosition_Patch
 /// <summary>
 /// Make sure ladder exit bump is in the right direction
 /// </summary>
-[HarmonyPatch(typeof(CharacterController))]
-[HarmonyPatch(nameof(CharacterController.SetInputs))]
-public static class CharacterController_SetInputs_Patch
+[HarmonyPatch(typeof(PlayerCharacterController))]
+[HarmonyPatch(nameof(PlayerCharacterController.SetInputs))]
+public static class PlayerCharacterController_SetInputs_Patch
 {
-	private static bool Prefix(ref CharacterController __instance, ref PlayerCharacterInputs inputs)
+	private static bool Prefix(ref PlayerCharacterController __instance, ref PlayerCharacterInputs inputs)
 	{
-		if (!Main.MySettings.DisableCameraSmoothing)
+		if (!ModEntryPoint.MySettings!.DisableCameraSmoothing)
 		{
 			return Constants.EXECUTE_ORIGINAL;
 		}
@@ -145,13 +143,13 @@ public static class CharacterController_SetInputs_Patch
 				__instance._shouldBeCrouching = false;
 				break;
 			case CharacterState.Seated:
-				if (__instance._attachState != CharacterController.AttachState.Stable ||
+				if (__instance._attachState != PlayerCharacterController.AttachState.Stable ||
 				    vector3_1.sqrMagnitude <= 1.0 / 1000.0 || __instance._seatStickyRemaining > 0.0)
 				{
 					break;
 				}
 
-				__instance._attachState = CharacterController.AttachState.Deanchoring;
+				__instance._attachState = PlayerCharacterController.AttachState.Deanchoring;
 				__instance._anchoringTimer = 0.0f;
 				break;
 			case CharacterState.Ladder:

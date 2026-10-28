@@ -20,7 +20,7 @@ public class CharacterCameraController_UpdateWithInput_Patch
 		float inputZoom,
 		bool inputResetZoom)
 	{
-		if (!Main.MySettings.DisableCameraSmoothing)
+		if (!ModEntryPoint.MySettings!.DisableCameraSmoothing)
 		{
 			return Constants.EXECUTE_ORIGINAL;
 		}
@@ -30,7 +30,7 @@ public class CharacterCameraController_UpdateWithInput_Patch
 			return Constants.SKIP_ORIGINAL;
 		}
 
-		var lookDelta = GameInput.shared.LookDelta;
+		var lookDelta = GameInput.Shared.LookDelta;
 
 		lookDelta.x *= MouseLookInput.CameraXMultiplier;
 		lookDelta.y *= MouseLookInput.CameraYMultiplier;

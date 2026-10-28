@@ -1,14 +1,29 @@
 <Project>
-    <PropertyGroup>
-        <RrInstallDir>/mnt/Data/SteamLibrary/steamapps/common/Railroader</RrInstallDir>
-        <ReferencePath>
-            $(RrInstallDir)/Railroader_Data/Managed/;
-            $(RrInstallDir)/Railroader_Data/Managed/UnityModManager/;
-        </ReferencePath>
-        <AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath);</AssemblySearchPaths>
-    </PropertyGroup>
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-        <!-- Copy to game folder -->
-        <Copy SourceFiles="$(TargetPath);README.md;info.json;LICENSE" DestinationFolder="$(RrInstallDir)/Mods/better_mouse_mod" />
-    </Target>
+<PropertyGroup>
+    <RrInstallDir>/mnt/Data/SteamLibrary/steamapps/common/Railroader</RrInstallDir>
+    <ReferencePath>
+        $(RrInstallDir)/Railroader_Data/Managed/;
+    </ReferencePath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath);</AssemblySearchPaths>
+</PropertyGroup>
+
+<ItemGroup>
+    <MonoMod Include="$(TargetDir)\MonoMod.*.dll"/>
+</ItemGroup>
+
+<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <!-- Copy to mods folder -->
+    <Copy SourceFiles="
+            $(TargetPath);
+            $(TargetDir)\Mono.Cecil.dll;
+            $(TargetDir)\Mono.Cecil.Mdb.dll;
+            $(TargetDir)\Mono.Cecil.Pdb.dll;
+            $(TargetDir)\Mono.Cecil.Rocks.dll;
+            $(TargetDir)\System.ValueTuple.dll;
+            @(MonoMod);
+            README.md;
+            Info.json;
+            LICENSE"
+          DestinationFolder="/home/username/Documents/Railroader/ModDev/better_mouse_mod" />
+</Target>
 </Project>

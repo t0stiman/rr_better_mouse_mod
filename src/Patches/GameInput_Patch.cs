@@ -5,23 +5,18 @@ using better_mouse_mod.Extensions;
 
 namespace better_mouse_mod.Patches;
 
+/// <summary>
+/// Cycle through your locomotives with the page up / page down keys
+/// </summary>
 [HarmonyPatch(typeof(GameInput))]
 [HarmonyPatch(nameof(GameInput.Update))]
 public class GameInput_Update_Patch
 {
-	private static void Postfix()
-	{
-		// TODO
-		// SwitchButtonStuff();
-		PauseStuff();
-	}
-
-	/// <summary>
-	/// Cycle through your locomotives with the page up / page down keys
-	/// </summary>
+	// private static void Postfix()
+	// {
 	// private static void SwitchButtonStuff()
 	// {
-	// 	if (!Main.MySettings.SwitchCarsWithButton)
+	// 	if (!ModEntryPoint.MySettings!.SwitchCarsWithButton)
 	// 	{
 	// 		return;
 	// 	}
@@ -51,7 +46,7 @@ public class GameInput_Update_Patch
 	// 		var selectedIndex = locomotives.IndexOf(selectedLocomotive);
 	// 		if (selectedIndex == -1)
 	// 		{
-	// 			Main.Error("Can't find selected locomotive in list");
+	// 			ModEntryPoint.Error("Can't find selected locomotive in list");
 	// 		}
 	// 		
 	// 		newSelectionIndex = Stuff.CPPModulo(selectedIndex + delta, locomotives.Count);
@@ -60,17 +55,6 @@ public class GameInput_Update_Patch
 	// 	TrainController.Shared.SelectedCar = locomotives[newSelectionIndex];
 	// 	CameraSelector.shared.JumpToCar(TrainController.Shared.SelectedCar);
 	// }
-
-	/// <summary>
-	/// Custom pause key
-	/// </summary>
-	private static void PauseStuff()
-	{
-		if (Input.GetKeyDown(Main.MySettings.PauseKeyCode))
-		{
-			PauseMenu_OnEnable_Patch.TogglePause();
-		}
-	}
 }
 
 // ======================================================
@@ -86,7 +70,7 @@ public class GameInput_TrainBrakeApply_Patch
 {
 	private static bool Prefix(ref bool __result, ref GameInput __instance)
 	{
-		__result = __instance._trainBrakeApplyRepeating.ActiveThisFrame(Main.MySettings.Smooth_RepeatInterval);
+		__result = __instance._trainBrakeApplyRepeating.ActiveThisFrame(ModEntryPoint.MySettings!.Smooth_RepeatInterval);
 
 		return Constants.SKIP_ORIGINAL;
 	}
@@ -98,7 +82,7 @@ public class GameInput_TrainBrakeRelease_Patch
 {
 	private static bool Prefix(ref bool __result, ref GameInput __instance)
 	{
-		__result = __instance._trainBrakeReleaseRepeating.ActiveThisFrame(Main.MySettings.Smooth_RepeatInterval);
+		__result = __instance._trainBrakeReleaseRepeating.ActiveThisFrame(ModEntryPoint.MySettings!.Smooth_RepeatInterval);
 
 		return Constants.SKIP_ORIGINAL;
 	}
@@ -111,7 +95,7 @@ public class GameInput_LocomotiveBrakeApply_Patch
 {
 	private static bool Prefix(ref bool __result, ref GameInput __instance)
 	{
-		__result = __instance._locomotiveBrakeApplyRepeating.ActiveThisFrame(Main.MySettings.Smooth_RepeatInterval);
+		__result = __instance._locomotiveBrakeApplyRepeating.ActiveThisFrame(ModEntryPoint.MySettings!.Smooth_RepeatInterval);
 
 		return Constants.SKIP_ORIGINAL;
 	}
@@ -123,7 +107,7 @@ public class GameInput_LocomotiveBrakeRelease_Patch
 {
 	private static bool Prefix(ref bool __result, ref GameInput __instance)
 	{
-		__result = __instance._locomotiveBrakeReleaseRepeating.ActiveThisFrame(Main.MySettings.Smooth_RepeatInterval);
+		__result = __instance._locomotiveBrakeReleaseRepeating.ActiveThisFrame(ModEntryPoint.MySettings!.Smooth_RepeatInterval);
 
 		return Constants.SKIP_ORIGINAL;
 	}

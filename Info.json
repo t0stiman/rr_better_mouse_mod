@@ -1,0 +1,13 @@
+{
+	"identifier": "com.tostiman/bettermousemod",
+	"name": "Better controls mod",
+	"author": "Tostiman",
+	"version": "1.0.0",
+	"license": "MIT",
+	"assemblies": ["better_mouse_mod.dll"],
+	"dependencies": {
+		"required": [ "rr/game >=0.6.0" ]
+	},
+	"url": "https://nexusmods.com/railroader/mods/10",
+	"scope": "optional"
+}

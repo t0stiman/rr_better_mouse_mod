@@ -11,7 +11,7 @@ public static class CameraSelector_Extensions
 
 		if (selectedCar == null)
 		{
-			Main.Error($"{nameof(JumpToSeatWithoutCameraChange)}: No selected car.");
+			ModEntryPoint.Error($"{nameof(JumpToSeatWithoutCameraChange)}: No selected car.");
 			return;
 		}
 

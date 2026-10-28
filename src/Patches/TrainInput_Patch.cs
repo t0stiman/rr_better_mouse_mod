@@ -3,7 +3,8 @@ using better_mouse_mod.Extensions;
 using Game.Messages;
 using Game.State;
 using HarmonyLib;
-using Model.Definition;
+using Model;
+using RollingStock;
 using RollingStock.Controls;
 using UI;
 using UI.Common;
@@ -11,9 +12,9 @@ using UnityEngine;
 
 namespace better_mouse_mod.Patches;
 
-// ======================================================
-// This patch is for the RepeatInterval settings. 
-// ======================================================
+/// <summary>
+/// This patch is for the RepeatInterval settings.
+/// </summary>
 [HarmonyPatch(typeof(TrainInput))]
 [HarmonyPatch(nameof(TrainInput.Update))]
 public class TrainInput_Update_Patch
@@ -25,15 +26,16 @@ public class TrainInput_Update_Patch
 		return Constants.SKIP_ORIGINAL;
 	}
 
-	//i should really learn to transpile
+	//i should really learn how to transpile
 	private static void Yes(ref TrainInput __instance)
 	{
-		if (!__instance.TryGetLocomotiveControlAdapter(out var loco, out var adapter))
+		if (!__instance.TryGetLocomotiveControlAdapter(out BaseLocomotive loco, out LocomotiveControlAdapter adapter))
 		{
 			return;
 		}
 
-		var gameInput = GameInput.shared;
+		var gameInput = GameInput.Shared;
+		var isShiftDown = GameInput.IsShiftDown; //todo dit + check hele functie
 		var isControlDown = GameInput.IsControlDown;
 
 		//todo verander de grootte van een stap ipv verkleinen van de herhaaltijd?
@@ -43,8 +45,8 @@ public class TrainInput_Update_Patch
 		var num5 = 0.0f;
 		var num6 = 0.0f;
 		
-		var reverserStepSize = loco.Archetype == CarArchetype.LocomotiveDiesel | isControlDown ? 1f : 0.1f;
-		var reverserRepeatInterval = Main.MySettings.Notched_RepeatInterval;
+		var reverserStepSize = loco.CarType.IsLocomotiveDiesel | isControlDown ? 1f : 0.1f;
+		var reverserRepeatInterval = ModEntryPoint.MySettings!.Notched_RepeatInterval;
 		
 		if (gameInput.GetReverserBack(reverserRepeatInterval))
 		{
@@ -60,11 +62,11 @@ public class TrainInput_Update_Patch
 		if (throttleNotches > 0) //notched
 		{
 			var throttleChangeo = 0;
-			if (gameInput.GetThrottleDown(Main.MySettings.Notched_RepeatInterval))
+			if (gameInput.GetThrottleDown(ModEntryPoint.MySettings!.Notched_RepeatInterval))
 			{
 				throttleChangeo = -1;
 			}
-			else if (gameInput.GetThrottleUp(Main.MySettings.Notched_RepeatInterval))
+			else if (gameInput.GetThrottleUp(ModEntryPoint.MySettings!.Notched_RepeatInterval))
 			{
 				throttleChangeo = 1;
 			}
@@ -82,11 +84,11 @@ public class TrainInput_Update_Patch
 			}
 		}
 
-		else if (gameInput.GetThrottleDown(Main.MySettings.Smooth_RepeatInterval))
+		else if (gameInput.GetThrottleDown(ModEntryPoint.MySettings!.Smooth_RepeatInterval))
 		{
 			throttleDelta = -throttleStepSize;
 		}
-		else if (gameInput.GetThrottleUp(Main.MySettings.Smooth_RepeatInterval))
+		else if (gameInput.GetThrottleUp(ModEntryPoint.MySettings!.Smooth_RepeatInterval))
 		{
 			throttleDelta = throttleStepSize;
 		}

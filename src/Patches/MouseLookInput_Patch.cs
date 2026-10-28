@@ -14,7 +14,7 @@ public class MouseLookInput_UpdateInput_Patch
 {
 	private static bool Prefix(ref MouseLookInput __instance, bool selected)
 	{
-		if (!Main.MySettings.DisableCameraSmoothing)
+		if (!ModEntryPoint.MySettings!.DisableCameraSmoothing)
 		{
 			return Constants.EXECUTE_ORIGINAL;
 		}
@@ -26,7 +26,7 @@ public class MouseLookInput_UpdateInput_Patch
 
 		if (selected)
 		{
-			var shared = GameInput.shared;
+			var shared = GameInput.Shared;
 
 			if (MouseLookInput.ToggleMouseLook)
 			{
@@ -44,7 +44,7 @@ public class MouseLookInput_UpdateInput_Patch
 				__instance.SetMouseMovesCamera(false);
 			}
 
-			if (!Main.MySettings.DisableCameraSmoothing)
+			if (!ModEntryPoint.MySettings!.DisableCameraSmoothing)
 			{
 				var lookDelta = __instance._mouseMovesCamera ? shared.LookDelta : Vector2.zero;
 				var cameraMoveX = MouseLookInput.CameraXMultiplier * lookDelta.x;

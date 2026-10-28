@@ -13,7 +13,7 @@ public class SwitchStandClick_MaxPickDistance_Patch
 {
 	private static void Postfix(ref float __result)
 	{
-		if (!Main.MySettings.ZoomDependentSwitchRange)
+		if (!ModEntryPoint.MySettings!.ZoomDependentSwitchRange)
 		{
 			return;
 		}
@@ -21,7 +21,7 @@ public class SwitchStandClick_MaxPickDistance_Patch
 		var firstPersonCamera = Camera.main;
 		if (firstPersonCamera is null)
 		{
-			Main.Error($"{nameof(SwitchStandClick_MaxPickDistance_Patch)}: {nameof(firstPersonCamera)} is null");
+			ModEntryPoint.Error($"{nameof(SwitchStandClick_MaxPickDistance_Patch)}: {nameof(firstPersonCamera)} is null");
 			return;
 		}
 

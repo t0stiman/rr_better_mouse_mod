@@ -15,12 +15,12 @@ public class SteamLocomotiveControl_ThrottleNotches_Patch
 {
 	private static bool Prefix(ref int __result)
 	{
-		if (!Main.MySettings.ChangeThrottleNotchCount_Steam)
+		if (!ModEntryPoint.MySettings!.ChangeThrottleNotchCount_Steam)
 		{
 			return Constants.EXECUTE_ORIGINAL;
 		}
 
-		__result = Main.MySettings.ThrottleNotchCount_Steam;
+		__result = ModEntryPoint.MySettings!.ThrottleNotchCount_Steam;
 		return Constants.SKIP_ORIGINAL;
 	}
 }
@@ -28,18 +28,19 @@ public class SteamLocomotiveControl_ThrottleNotches_Patch
 // Diesel
 
 //todo fix this
+
 // [HarmonyPatch(typeof(DieselLocomotiveControl))]
 // [HarmonyPatch(nameof(DieselLocomotiveControl.ThrottleNotches), MethodType.Getter)]
 // public class DieselLocomotiveControl_ThrottleNotches_Patch
 // {
 // 	private static bool Prefix(ref int __result)
 // 	{
-// 		if (!Main.MySettings.ChangeThrottleNotchCount_Diesel)
+// 		if (!ModEntryPoint.MySettings!.ChangeThrottleNotchCount_Diesel)
 // 		{
 // 			return Constants.EXECUTE_ORIGINAL;
 // 		}
 // 		
-// 		__result = Main.MySettings.ThrottleNotchCount_Diesel;
+// 		__result = ModEntryPoint.MySettings!.ThrottleNotchCount_Diesel;
 // 		return Constants.SKIP_ORIGINAL;
 // 	}
 // }
@@ -50,7 +51,7 @@ public class SteamLocomotiveControl_ThrottleNotches_Patch
 // {
 // 	private static bool Prefix(ref float __result, DieselLocomotiveControl __instance)
 // 	{
-// 		if (!Main.MySettings.ChangeThrottleNotchCount_Diesel)
+// 		if (!ModEntryPoint.MySettings!.ChangeThrottleNotchCount_Diesel)
 // 		{
 // 			return Constants.EXECUTE_ORIGINAL;
 // 		}
@@ -66,7 +67,7 @@ public class SteamLocomotiveControl_ThrottleNotches_Patch
 // {
 // 	private static bool Prefix(DieselLocomotiveControl __instance, float value)
 // 	{
-// 		if (!Main.MySettings.ChangeThrottleNotchCount_Diesel)
+// 		if (!ModEntryPoint.MySettings!.ChangeThrottleNotchCount_Diesel)
 // 		{
 // 			return Constants.EXECUTE_ORIGINAL;
 // 		}

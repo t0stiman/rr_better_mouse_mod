@@ -9,7 +9,7 @@ public class ExpandedConsole_DismissDebounced_Patch
 {
 	private static bool Prefix()
 	{
-		if (Main.MySettings.EnableConsolePatch)
+		if (ModEntryPoint.MySettings!.EnableConsolePatch)
 		{
 			return Constants.SKIP_ORIGINAL;
 		}
